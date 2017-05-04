@@ -73,10 +73,10 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
                     <form class="form-signin" method="POST" action="?go=logar">
                         <!-- <h2 class="form-signin-heading">Please sign in</h2> -->
                         <label for="inputEmail" class="sr-only">Usuário</label>
-                        <input type="email" id="email" name="email" class="form-control" placeholder="E-mail" required autofocus style="margin-top:25px;">
+                        <input type="email" id="email" name="email" class="form-control" placeholder="E-mail" required autofocus style="margin-top:25px;" maxlength="30">
 
                         <label for="inputPassword" class="sr-only">Senha</label>
-                        <input type="password" id="senha" name="senha" maxlength="8" class="form-control" placeholder="Senha" required style="margin-top:12px;">
+                        <input type="password" id="senha" name="senha" maxlength="20" class="form-control" placeholder="Senha" required style="margin-top:12px;" >
 
                         <!-- <div class="checkbox">
                           <label>
@@ -122,7 +122,7 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
     if (@$_GET['go'] == 'logar') {
         $email = $_POST['email'];
         $senha = $_POST['senha'];
-            
+
         if (empty($email)) {
             echo "<script> alert{'Preencha todos os campos!'}; history.back(); <\script>";
         } elseif (empty($senha)) {
@@ -153,11 +153,10 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
                     echo 'alert("Email ou senha incorretos")';
                     echo '</script>';
                 }
-                    
-                
+
+
                 //echo "<meta http-equiv='refresh' content='0, url=index.php'>";
             }
         }
     }
 ?>
-

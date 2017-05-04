@@ -67,27 +67,27 @@ require_once 'conexao.php';
 
                     <form style="width:100%;" method="POST" action="?go=cadastrar">
                         <!-- <h2 class="form-signin-heading">Please sign in</h2> -->
-                        <input type="name" id="nome" name="nome" class="form-control" placeholder="Nome completo" required autofocus style="margin-top:25px;">
+                        <input type="name" id="nome" name="nome" class="form-control" placeholder="Nome completo" required autofocus style="margin-top:25px;" maxlength="70">
                         <div class="row" style="margin-top:12px;">
                             <div class="form-group col-md-8">
-                                <input type="text" class="form-control" id="curso" name="curso" placeholder="Curso">
+                                <input type="text" class="form-control" id="curso" name="curso" placeholder="Curso" maxlength="50">
                             </div>
 
                             <div class="form-group col-md-4">
-                                <input type="text" class="form-control" id="semestre" name="semestre" placeholder="Semestre">
+                              <input type="text" class="form-control" id="semestre" name="semestre" placeholder="Semestre" maxlength="2">
                             </div>
                         </div>
-                        <input type="email" id="email" name="email" class="form-control" placeholder="E-mail" required autofocus style="">
+                        <input type="email" id="email" name="email" class="form-control" placeholder="E-mail" required autofocus style="" maxlength="30">
 
                         <div class="row">
                             <div class="form-group col-md-6">
-                                <input type="password" id="senha" name="senha" maxlength="8" class="form-control" placeholder="Senha" required style="margin-top:12px;">
+                                <input type="password" id="senha" name="senha"  class="form-control" placeholder="Senha (máximo: 20 caracteres)" required style="margin-top:12px;" maxlength="20">
                             </div>
 
                             <div class="form-group col-md-6">
-                                <input type="password" id="inputPassword" maxlength="8" class="form-control" placeholder="Confirme sua senha" required style="margin-top:12px;">
+                                <input type="password" id="inputPassword"  class="form-control" placeholder="Confirme sua senha (máximo: 20 caracteres)" required style="margin-top:12px;" maxlength="20">
                             </div>
-                        </div> 
+                        </div>
 
                         <button class="btn btn-lg btn-primary " type="submit" style="background-color:#FFC125; width: 50%;" style="margin-top:12px;" value="cadastrar">Cadastrar</button>
 
@@ -124,7 +124,7 @@ require_once 'conexao.php';
         $semestre = $_POST['semestre'];
         $email = $_POST['email'];
         $senha = $_POST['senha'];
-            
+
         if (empty($nome)) {
             echo "<script> alert{'Preencha todos os campos!'}; history.back(); <\script>";
         } elseif (empty($curso)) {
