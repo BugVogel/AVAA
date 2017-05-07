@@ -67,7 +67,7 @@ require_once 'conexao.php';
 
                     <form style="width:100%;" method="POST" action="?go=cadastrar">
                         <!-- <h2 class="form-signin-heading">Please sign in</h2> -->
-                        <input type="name" id="nome" name="nome" class="form-control" placeholder="Nome completo" required autofocus style="margin-top:25px;" maxlength="70">
+                        <input type="name" id="nome" name="nome" class="form-control" placeholder="Nome completo" required autofocus style="margin-top:25px;" maxlength="50">
                         <div class="row" style="margin-top:12px;">
                             <div class="form-group col-md-8">
                                 <input type="text" class="form-control" id="curso" name="curso" placeholder="Curso" maxlength="50">
@@ -77,7 +77,7 @@ require_once 'conexao.php';
                               <input type="text" class="form-control" id="semestre" name="semestre" placeholder="Semestre" maxlength="2">
                             </div>
                         </div>
-                        <input type="email" id="email" name="email" class="form-control" placeholder="E-mail" required autofocus style="" maxlength="30">
+                        <input type="email" id="email" name="email" class="form-control" placeholder="E-mail" required autofocus style="" maxlength="50">
 
                         <div class="row">
                             <div class="form-group col-md-6">
@@ -124,6 +124,7 @@ require_once 'conexao.php';
         $semestre = $_POST['semestre'];
         $email = $_POST['email'];
         $senha = $_POST['senha'];
+        $hashCode = hash("md5",$email, true );
 
         if (empty($nome)) {
             echo "<script> alert{'Preencha todos os campos!'}; history.back(); <\script>";
@@ -143,12 +144,93 @@ require_once 'conexao.php';
                 echo '</script>';
                 echo 'history.back();';
             } else {
-                mysql_query("INSERT INTO `aluno` (`Nome`, `Curso`, `Semestre`, `Email`, `Senha`) VALUES ('$nome', '$curso', '$semestre', '$email', '$senha')");
+
+              $corpo = montarCorpoEmail($nome,$hashCode);
+              $envio = enviaEmail($destino, $corpo);
+
+             if($envio){
+
+                mysql_query("INSERT INTO `aluno` (`Nome`, `Curso`, `Semestre`, `Email`, `Senha`, `HashCode`, `Email Confirmado`) VALUES ('$nome', '$curso', '$semestre', '$email', '$senha', '$hashCode', '0')");
                 echo '<script language="javascript">';
-                echo 'alert("Usuário cadastrado com sucesso!")';
+                echo 'alert("Para completar o cadastro verifique o e-mail enviado ao e-mail fornecido")';
                 echo '</script>';
                 echo "<meta http-equiv='refresh' content='0, url=index.php'>";
+
+              }
+              else{
+
+                  echo '<script language="javascript"> alert("E-mail fornecido não existe") </script>';
+
+
+              }
             }
         }
     }
+
+
+            function enviaEmail($destino, $corpo){
+
+
+
+                    $headers  = 'MIME-Version: 1.0' . "\r\n";
+                    $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+                    $headers .= 'From: $nome <$email>';
+                    $headers .= "Bcc: $EmailPadrao\r\n";
+
+
+
+            return   mail($destino, "Confirmação de Email -AVAA", $corpo, $headers);
+
+
+
+
+            }
+
+
+            function montarCorpoEmail($nome, $hashCode){
+
+                $corpo = "
+
+                <style>
+
+                body {
+                  margin:0px;
+                  font-family:Verdane;
+                  font-size:12px;
+                  color: #fff;
+                  text-aling:center;
+
+                  }
+
+                </style>
+
+                <html>
+
+                <h1> Olá $nome </h1>
+
+                <p> Você acaba de enviar uma solicitação de cadastro ao AVAA, para \n completar o seu cadastrado
+                você deve copiar o código abaixo e acessar\n o link enviado. </p>
+
+
+
+                <li> Link para completar o cadastro: $hashCode </li>
+                <li> Código para confirmação: </li>
+
+
+
+                <p>Att, Equipe AVAA.</p>
+
+
+                </html>
+
+
+                ";
+
+                return $corpo;
+
+            }
+
+
+
+
 ?>

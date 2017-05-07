@@ -73,7 +73,7 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
                     <form class="form-signin" method="POST" action="?go=logar">
                         <!-- <h2 class="form-signin-heading">Please sign in</h2> -->
                         <label for="inputEmail" class="sr-only">Usuário</label>
-                        <input type="email" id="email" name="email" class="form-control" placeholder="E-mail" required autofocus style="margin-top:25px;" maxlength="30">
+                        <input type="email" id="email" name="email" class="form-control" placeholder="E-mail" required autofocus style="margin-top:25px;" maxlength="50">
 
                         <label for="inputPassword" class="sr-only">Senha</label>
                         <input type="password" id="senha" name="senha" maxlength="20" class="form-control" placeholder="Senha" required style="margin-top:12px;" >
@@ -130,21 +130,41 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
         } else {
             $query1 = mysql_num_rows(mysql_query("SELECT * FROM `aluno` WHERE `Email` = '$email' AND `Senha` = '$senha'"));
             if ($query1 == 1) {
+              $query2 = mysql_fetch_array(mysql_query("SELECT * FROM `aluno` WHERE `Email` = '$email' AND `Senha` = '$senha'"));
+
+              $pendencia = $query2['Email Confirmado'];
+
+
+
+              if($pendencia){
                 $_SESSION['usuario_session'] = $email;
                 $_SESSION['senha_session'] = $senha;
                 echo '<script language="javascript">';
                 echo 'alert("Usuário logado com sucesso!")';
                 echo '</script>';
                 echo "<meta http-equiv='refresh' content='0, url=principalAluno.php'>";
+              }
+              else{
+                echo '<script language = "javascript"> alert("Verificação de e-mail pendente") </script>';
+              }
             } else {
                 $query1 = mysql_num_rows(mysql_query("SELECT * FROM `professor` WHERE `Email` = '$email' AND `Senha` = '$senha'"));
                 if ($query1 == 1) {
+
+                    $query2 = mysql_fetch_array(mysql_query("SELECT * FROM `professor` WHERE `Email` = '$email' AND `Senha` ='$senha'"));
+                    $pendencia = $query2['Email Confirmado'];
+
+                  if($pendencia){
                     $_SESSION['usuario_session'] = $email;
                     $_SESSION['senha_session'] = $senha;
                     echo '<script language="javascript">';
                     echo 'alert("Usuário logado com sucesso!")';
                     echo '</script>';
                     echo "<meta http-equiv='refresh' content='0, url=principalProf.php'>";
+                  }
+                  else{
+                  echo '<script language = "javascript"> alert("Verificação de e-mail pendente") </script>';
+                  }
                 }
                 else{
                     echo $query1;
