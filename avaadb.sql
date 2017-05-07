@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 4.6.5.2
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 14-Abr-2017 às 03:02
--- Versão do servidor: 10.1.16-MariaDB
--- PHP Version: 5.6.24
+-- Generation Time: 07-Maio-2017 às 20:28
+-- Versão do servidor: 10.1.21-MariaDB
+-- PHP Version: 5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -31,19 +31,21 @@ CREATE TABLE `aluno` (
   `Curso` varchar(50) NOT NULL,
   `Semestre` int(2) NOT NULL,
   `Email` varchar(50) NOT NULL,
-  `Senha` varchar(10) NOT NULL
+  `Senha` varchar(20) NOT NULL,
+  `HashCode` int(50) NOT NULL,
+  `Email Confirmado` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `aluno`
 --
 
-INSERT INTO `aluno` (`Nome`, `Curso`, `Semestre`, `Email`, `Senha`) VALUES
-('Rafael da Silva Macêdo', 'Engenharia', 9, '3011rafael@gmail.com', '123456'),
-('Gabriel', 'Engenharia', 10, 'gsm_fsa2008@hotmail.com', '123'),
-('teste', 'tt', 1, 't@gmail.com', '11'),
-('f', 'ds', 0, 'teste@gmail.com', '123'),
-('teste', 'teste', 1, 'teste@teste.com', '123');
+INSERT INTO `aluno` (`Nome`, `Curso`, `Semestre`, `Email`, `Senha`, `HashCode`, `Email Confirmado`) VALUES
+('Rafael da Silva Macêdo', 'Engenharia', 9, '3011rafael@gmail.com', '123456', 0, 1),
+('Gabriel', 'Engenharia', 10, 'gsm_fsa2008@hotmail.com', '123', 0, 1),
+('teste', 'tt', 1, 't@gmail.com', '11', 0, 1),
+('f', 'ds', 0, 'teste@gmail.com', '123', 0, 0),
+('teste', 'teste', 1, 'teste@teste.com', '123', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -145,16 +147,18 @@ INSERT INTO `bloco_linhas` (`ID_atividade`, `Bloco`, `texto`) VALUES
 CREATE TABLE `professor` (
   `Nome` varchar(50) NOT NULL,
   `Email` varchar(50) NOT NULL,
-  `Senha` varchar(50) NOT NULL
+  `Senha` varchar(50) NOT NULL,
+  `HashCode` int(50) NOT NULL,
+  `Email Confirmado` tinyint(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `professor`
 --
 
-INSERT INTO `professor` (`Nome`, `Email`, `Senha`) VALUES
-('Professor 2', 'professor2@gmail.com', '123456'),
-('Professor', 'professor@gmail.com', '123456');
+INSERT INTO `professor` (`Nome`, `Email`, `Senha`, `HashCode`, `Email Confirmado`) VALUES
+('Professor 2', 'professor2@gmail.com', '123456', 0, 0),
+('Professor', 'professor@gmail.com', '123456', 0, 1);
 
 -- --------------------------------------------------------
 
