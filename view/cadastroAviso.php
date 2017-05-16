@@ -31,21 +31,12 @@ else{
         <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
         <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
         <script src="../js/ie-emulation-modes-warning.js"></script>
-        <script src="../js/funcoes.js" type="text/javascript"></script>
-
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
           <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
-
-        <script>
-            function ajuda()
-            {
-            alert("Informe todo o código na caixa de texto e em seguida você poderá particioná-lo como desejar!");
-            }
-        </script>
     </head>
 
     <body>
@@ -64,38 +55,63 @@ else{
                                 <ul class="nav masthead-nav">
                                     <li><a href="principalProf.php">Início</a></li>
                                     <li><a href="minhasTurmas.php">Minhas turmas</a></li>
-                                    <li class="active"> <a href="#">Cadastrar atividade</a></li>
+                                    <li class="active"><a href="cadastrarAviso.php">Cadastrar Aviso</a></li>
                                     <li><a href="?go=sair">Logoff</a></li>
                                 </ul>
                             </nav>
                         </div>
                     </div>
 
+                    </div>
+
+        <h2 style="text-align:center"> Cadastro de Avisos</h2>
+        <br>
 
 
-                    <form class="" method="post" action="../model/action.php" name="formulario" id="formulario">
-                        <input type="hidden" id="action" name="action" />
+                    <div  class="inner cover">
 
-                            <?php
-                                $turmas = $_GET['turmas']; // String com IDS das turmas que deve ser convertida em array
-                                echo "<input type=\"hidden\" id=\"turmas\" name=\"turmas\" value=\"$turmas\" />";
-                            ?>
+                      <div class="col-md-6 col-xs-12" style="border-right:solid 1px LightBlue;">
 
-                            <label for="edit-output-data" style="font-size: 150%;">Descrição do algoritmo: </label><br>
-                            <textarea style="color:black;border-radius:10px" rows="3" cols="58" id="descricao" name="descricao"></textarea>
-                            <br>
-                            <label for="edit-output-data" style="font-size: 150%;">Código-fonte: </label><br>
+                       <h3 class="cover-heading"style="font-size:20px;"> Avisos Cadastrados</h3>
+                         <div class="panel-group">
+                           <div class="panel panel-primary">
+                             <div class="panel-heading"> Programação e Algoritmos II</div>
+                             <div style="color:black;" class="panel-body"> Olá Turma, não haverá aula hoje</div>
+                           </div>
+                         </div>
+                       </div>
 
-                            <textarea style="color:black;border-radius:10px" rows="5" cols="58" id="codigo" name="codigo" placeholder="Informe o código-fonte"></textarea>
-                            <!--<br><textarea style="color:black;" rows="5" cols="58" id="processamento" name="processamento" placeholder="Informe o trecho de código referente ao processamento de dados"></textarea>-->
-                            <!--<br><textarea style="color:black;" rows="5" cols="58" id="saida" name="saida" placeholder="Informe o trecho de código referente à saída de dados"></textarea>-->
-                            <br>
-                            <br>
-                            <button type="button" class="btn btn-default" style=" margin:4px;" onclick="ajuda()">Ajuda</button>
-                            <button type="submit" class="btn btn-success" onclick="javascript:doPost('formulario', 'editarAtividade');"> Salvar </button> <br>
-                            <!--<input type="button" value="Avançar" class="btn btn-success" onclick="javascript:doPost('formulario', 'salvarAtividadeFacil');">	;-->
+
+
+                    <div class="col-md-6 col-xs-12">
+
+                    <form name="formulario" id="formulario" class="form-signin" method="POST" action="?go=avisar">
+
+                      <?php
+
+                      if(isset($_GET['turmas'])){
+
+                        $turmas = $_GET['turmas'];
+
+                      echo "<input type='hidden' name='turmas' id='turmas' value='$turmas' >";
+
+                          }
+
+                       ?>
+                      <label for="aviso" style="text-align:left;font-size:15px;position:relative;right:95px;">Enviar Aviso</label>
+                      <br>
+                      <textarea id="aviso" style="color:black;text-align:left;border-radius:10px;" name="aviso" rows="5" cols="50" placeholder="Mensagem"> </textarea>
+                      <br>
+                      <button id="enviar" style="position:relative;right:110px;" type="submit" class="btn btn-warning" name="enviar">Enviar</button>
+
+
+
 
                     </form>
+
+             </div>
+
+           </div>
 
 
                     <!-- <div class="mastfoot">
@@ -108,7 +124,7 @@ else{
 
             </div>
 
-        </div>
+
 
         <!-- Bootstrap core JavaScript
         ================================================== -->
@@ -120,6 +136,10 @@ else{
         <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
     </body>
 </html>
+
+
+
+
 
 <?php
 }

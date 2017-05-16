@@ -32,7 +32,7 @@ else{
         <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
         <script src="../js/ie-emulation-modes-warning.js"></script>
         <script src="../js/funcoes.js" type="text/javascript"></script>
-        
+
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -52,7 +52,7 @@ else{
 
                     <div class="masthead clearfix">
                         <div class="inner">
-                            
+
                             <nav>
                                 <ul class="nav masthead-nav">
                                     <li><a href="principalProf.php">Início</a></li>
@@ -64,29 +64,29 @@ else{
                         </div>
                     </div>
 
-     
 
+               <br><br><br>
                     <form class="" method="post" action="../model/action.php" name="formulario" id="formulario">
                         <input type="hidden" id="action" name="action" />
-                        
+
                             <?php
                                 $turmas = $_GET['turmas']; // String com IDS das turmas que deve ser convertida em array
                                 echo "<input type=\"hidden\" id=\"turmas\" name=\"turmas\" value=\"$turmas\" />";
                             ?>
-                            
-                            <label for="edit-output-data" style="font-size: 150%;">Descrição do algoritmo: </label><br> 
-                            <textarea style="color:black;" rows="3" cols="58" id="descricao" name="descricao"></textarea>
+
+                            <label for="edit-output-data" style="font-size: 150%;">Descrição do algoritmo: </label><br>
+                            <textarea style="color:black;border-radius:10px" rows="3" cols="58" id="descricao" name="descricao"></textarea>
                             <br>
-                            <label for="edit-output-data" style="font-size: 150%;">Código-fonte: </label><br> 
-                            
-                            <textarea style="color:black;" rows="5" cols="58" id="entrada" name="entrada" placeholder="Informe o trecho de código referente a entrada de dados"></textarea>
-                            <br><textarea style="color:black;" rows="5" cols="58" id="processamento" name="processamento" placeholder="Informe o trecho de código referente ao processamento de dados"></textarea>
-                            <br><textarea style="color:black;" rows="5" cols="58" id="saida" name="saida" placeholder="Informe o trecho de código referente à saída de dados"></textarea>
+                            <label for="edit-output-data" style="font-size: 150%;">Código-fonte: </label><br>
+
+                            <textarea style="color:black;border-radius:10px" rows="5" cols="58" id="entrada" name="entrada" placeholder="Informe o trecho de código referente a entrada de dados"></textarea>
+                            <br><textarea style="color:black;border-radius:10px" rows="5" cols="58" id="processamento" name="processamento" placeholder="Informe o trecho de código referente ao processamento de dados"></textarea>
+                            <br><textarea style="color:black;border-radius:10px;" rows="5" cols="58" id="saida" name="saida" placeholder="Informe o trecho de código referente à saída de dados"></textarea>
                             <br>
 
                             <button type="submit" class="btn btn-success" onclick="javascript:doPost('formulario', 'salvarAtividadeFacil');">Salvar</button> <br>
                             <!--<input type="button" value="Avançar" class="btn btn-success" onclick="javascript:doPost('formulario', 'salvarAtividadeFacil');">	;-->
-                            
+
                     </form>
 
 

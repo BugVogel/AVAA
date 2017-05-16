@@ -45,11 +45,11 @@ function editar() {
 
 function excluir() {
     $idTurma = $_POST['idTurma'];
-    
+
     $nAlunos = count($_POST['del']);
-    
+
     if($nAlunos > 0){
-    
+
         foreach ($_POST['del'] as $remove_item) {
             mysql_query("DELETE FROM turma_alunos WHERE ID_aluno=\"$remove_item\" and ID_turma=$idTurma");
         }
@@ -64,11 +64,11 @@ function excluir() {
 function excluirTurma(){
     $nTurmas = count($_POST['turmas']);
     if($nTurmas > 0){
-    
+
         foreach ($_POST['turmas'] as $remove_item) {
             mysql_query("DELETE FROM turma_alunos WHERE ID_turma=$remove_item");
             mysql_query("DELETE FROM turma WHERE ID=$remove_item");
-            
+
         }
         echo "<meta http-equiv='refresh' content='1, url=../view/minhasTurmas.php'>";
     }
@@ -85,7 +85,7 @@ function redCadastrarAtividade(){
     }
     else if($nivel == 2){
          echo "<meta http-equiv='refresh' content='0, url=../view/cadastroAtividadeMedio.php?turmas=$turmas'>";
-    }  
+    }
 }
 
 function cadastrarAtividade(){
@@ -99,31 +99,31 @@ function salvarAtividadeFacil(){
     $descricao = $_POST['descricao'];
     $entrada = $_POST['entrada'];
     $processamento = $_POST['processamento'];
-    $saida = $_POST['saida']; 
+    $saida = $_POST['saida'];
     $nivel = 1;
     $blocos = 3;
-    
-    
+
+
 //    mysql_query("INSERT INTO `atividade`(`Descricao`, `Nível`, `N_Blocos`) VALUES (" . $descricao, 1 , 3 . ")");
 //    $res = mysql_query("INSERT INTO `atividade`(`Descricao`, `Nível`, `N_Blocos`) VALUES (\'$descricao\', 1, 3)");
 //    mysql_query("INSERT INTO `atividade`(`Descricao`, `Nível`, `N_Blocos`) VALUES ('$descricao', '$nivel', '$blocos')");
     $res = mysql_query("INSERT INTO `atividade` (`Descricao`, `Nivel`, `N_Blocos`) VALUES ('".$descricao."', '$nivel', '$blocos')");
     $ID = mysql_insert_id();
-    
+
     $res = mysql_query("INSERT INTO `bloco_linhas` (`ID_atividade`, `Bloco`, `texto`) VALUES ('$ID', '1', '".$entrada."')");
     $res = mysql_query("INSERT INTO `bloco_linhas` (`ID_atividade`, `Bloco`, `texto`) VALUES ('$ID', '2', '".$processamento."')");
     $res = mysql_query("INSERT INTO `bloco_linhas` (`ID_atividade`, `Bloco`, `texto`) VALUES ('$ID', '3', '".$saida."')");
-    
+
     for($i = 0; $i<sizeof($turmas); $i++)
     {
         $idTurma = $turmas[$i];
         $res = mysql_query("INSERT INTO `atividade_turma` (`ID_atividade`, `ID_turma`) VALUES ('$ID', '$idTurma')");
     }
-    
+
     echo "<meta http-equiv='refresh' content='1, url=../view/minhasTurmas.php'>";
     echo '<script language="javascript">';
     echo 'alert("Atividade cadastrada com sucesso!")';
-    echo '</script>'; 
+    echo '</script>';
 }
 
 function editarAtividade(){
@@ -131,8 +131,22 @@ function editarAtividade(){
     $_SESSION['codigo'] = $_POST['codigo'];
     $_SESSION['nivel'] = 2;
     echo "<meta http-equiv='refresh' content='0, url=../view/editarAtividade.php'>";
-    
+
 }
 
-?>
+function cadastroAviso(){
 
+$turmas = $_POST['turmas'];
+
+$str_turmas = implode(",", $turmas);
+
+echo "<meta http-equiv='refresh'  content='0, url=../view/cadastroAviso.php?turmas=$str_turmas'  />";
+
+
+
+}
+
+
+
+
+?>

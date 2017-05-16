@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-
 <?php
 require_once 'conexao.php';
 session_start();
@@ -58,8 +56,9 @@ if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) 
 
                                 <nav>
                                     <ul class="nav masthead-nav">
-                                        <li><a href="principalProf.php">Início</a></li>
-                                        <li class="active"><a href="#">Minhas turmas</a></li>
+                                        <li><a href="principalAluno.php">Início</a></li>
+                                        <li class="active"><a href="minhasTurmasAluno.php">Minhas turmas</a></li>
+                                        <li><a href="#">Avisos</a></li>
                                         <li><a href="?go=sair">Logoff</a></li>
                                     </ul>
                                 </nav>
@@ -76,31 +75,41 @@ if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) 
                                 <form class="" method="post" action="../model/action.php" name="formulario"  id="formulario">
                                     <input type="hidden" id="action" name="action" />
 
-                                    <a href="cadastroTurma.php" class="btn btn-success btn-lg" role="button">Nova turma</a>
+
                                     <br>
                                     <br>
                                     <?php
                                     $email = $_SESSION['usuario_session'];
-                                    $res = mysql_query("select * from turma WHERE `Professor` = '$email'");
+                                    $res = mysql_query("select * from turma_alunos WHERE `ID_aluno` = '$email'");
                                     $nLinhas = mysql_num_rows($res);
                                     if ($nLinhas > 0) {
-                                        echo "<table 'align='center' border=2 cellspacing=3 cellpadding=2><tr><td><b>&emsp; DISCIPLINA &emsp;</b></td><td><b>&emsp; INSTITUIÇÃO &emsp;</b></td><td></td></tr>";
+                                        echo "<table align='center' border=2 cellspacing=3 cellpadding=2><tr><td><b>&emsp; DISCIPLINA &emsp;</b></td><td><b>&emsp; PROFESSOR &emsp;</b></td></tr>";
 
                                         /* Enquanto houver dados na tabela para serem mostrados será executado tudo que esta dentro do while */
-                                        while ($escrever = mysql_fetch_array($res)) {
 
-                                            /* Escreve cada linha da tabela */
-                                            echo "<tr><td><a name=\"disciplinas[]\" id=\"disciplinas[]\" value=\"" . $escrever['Disciplina'] . " - " . $escrever['Escola'] . "\" href=\"cadastroAlunoTurma.php?ID=" . $escrever['ID'] . "\">" . $escrever['Disciplina'] . "</a>&emsp;</td><td>" . "" . $escrever['Escola'] . "</td><td>&emsp;"
-                                            . "<input name=\"turmas[]\" type=\"checkbox\" id=\"turmas[]\" value=" . $escrever['ID'] . ">"
-                                            . "&emsp;</td></tr>";
-                                        }/* Fim do while */
+
+                                       while($coletaIds = mysql_fetch_array($res)){
+                                       $ID = $coletaIds['ID_turma'];
+
+                                       $turmas = mysql_query("SELECT * FROM `turma` WHERE `ID` = '$ID' ");
+
+                                       while($escreve = mysql_fetch_array($turmas)){
+
+                                         echo "<tr><td>"."<b>" . $escreve['Disciplina'] . "&emsp;" ."</b>"."</td><td>" . "" . $escreve['Professor'] . "</td></tr>";
+
+                                         /* Escreve cada linha da tabela */
+
+                                       }/* Fim do while interno*/
+
+
+                                     } /* Fim do While externo*/
 
 
                                         echo "</table>"; /* fecha a tabela apos termino de impressão das linhas */
                                         echo "<br>";
                                         echo "<a type=\"button\" value=\"Excluir turma(s)\" class=\"btn btn-danger\" onclick=\"javascript:doPost('formulario', 'excluirTurma');\">Excluir turma(s)</a>";
                                         echo "&emsp;";
-                                        echo "<a type=\"button\" class=\"btn btn-warning\" value=\"Cadastrar aviso\" onclick=\"javascript:doPost('formulario', 'cadastroAviso')\">Cadastrar aviso</a>";
+                                        echo "<a type=\"button\" class=\"btn btn-warning\" value=\"Cadastrar aviso\">Cadastrar aviso</a>";
                                         echo "&emsp;";
                                         echo "<a type=\"button\" class=\"btn btn-info\" value=\"Cadastrar atividade\" onclick=\"javascript:doPost('formulario', 'cadastrarAtividade');\">Cadastrar atividade</a>";
                                     }

@@ -54,7 +54,7 @@ else{
                             <nav>
                                 <ul class="nav masthead-nav">
                                     <li class="active"><a href="#">Início</a></li>
-                                    <li><a href="#">Minhas turmas</a></li>
+                                    <li><a href="minhasTurmasAluno.php">Minhas turmas</a></li>
                                     <li><a href="#">Avisos</a></li>
                                     <li><a href="?go=sair">Logoff</a></li>
                                 </ul>
@@ -71,7 +71,7 @@ else{
                     </div>
 
                     <form class="form-signin" method="POST" action="?go=logar">
-                       
+
 
                     </form>
 
