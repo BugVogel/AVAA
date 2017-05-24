@@ -1,8 +1,16 @@
 <?php
 
 require_once '../view/conexao.php';
+session_start();
+if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
+    echo "<meta http-equiv='refresh' content='0, url=index.php'>";
+}
+
+
+
 //pego o nome da função que foi passada para o campo hidden
-$funcao = $_REQUEST["action"];
+
+  $funcao = $_REQUEST["action"];
 
 
 
@@ -10,10 +18,12 @@ $funcao = $_REQUEST["action"];
 //http://br2.php.net/manual/pt_BR/function.function-exists.php
 
 if (function_exists($funcao)) {
+
 //call_user_func Chama uma função de usuário dada pelo primeiro parâmetro
 //http://br2.php.net/manual/pt_BR/function.call-user-func.php
     call_user_func($funcao);
 }
+
 
 function salvar() {
 //	$campo  = $_POST["campo"];
@@ -145,6 +155,80 @@ echo "<meta http-equiv='refresh'  content='0, url=../view/cadastroAviso.php?turm
 
 
 }
+
+
+ function gerarIDAviso($aviso,$avisoQuery,$ID){
+//Sempre gera o próximo número em ordem crescente de acordo com a tabela, para cada professor
+
+ //Se existir um próximo aviso desse professor, desce ainda mais na tabela
+ if($aviso = mysql_fetch_array($avisoQuery)){
+
+
+ $ID = gerarIDAviso($aviso, $avisoQuery, $aviso['ID']);
+
+ }else{
+
+//Chegou no ultimo
+ return $ID+1;
+
+}
+
+//repete
+return $ID;
+
+
+
+
+
+ }
+
+
+function cadastrarAviso(){
+
+
+          //Pega informações
+          $titulo = $_POST['titulo'];
+          $texto = $_POST['aviso'];
+          $data = date('d/m/Y');
+          $turmas = explode(',', $_POST['turmas']);
+          $email = $_SESSION['usuario_session'];
+
+          //Pega nome do professor
+          $queryProfessor = mysql_query("SELECT * FROM `professor` WHERE `Email` = '$email'");
+          $professorDb = mysql_fetch_array($queryProfessor);
+          $nome = $professorDb['Nome'];
+
+          //Insere o aviso em todas as turmas
+          for($i = 0; $i<sizeof($turmas); $i++){
+
+          $turma =$turmas[$i];
+          $avisoQuery = mysql_query("SELECT * FROM `aviso` WHERE `Nome_Professor` = '$nome'");
+          $aviso =null;
+
+          //Recursiva, percorre a tabela até o ultimo ID gerado
+          $ID = gerarIDAviso($aviso, $avisoQuery,0);
+
+          mysql_query("INSERT INTO `aviso` (`ID`, `Titulo`, `Texto`, `Data`, `ID_Turma`, `Nome_Professor`) VALUES ('$ID', '$titulo', '$texto', '$data','$turma','$nome')");
+          $numTurma = $_POST['turmas'];
+
+          echo "<meta http-equiv='refresh' content='0, url=../view/cadastroAviso.php?turmas=$numTurma'?pag=1 />";
+
+          }
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
 
 
 

@@ -1,0 +1,29 @@
+
+
+.scrollAvisosButton{
+     background-color: #79BD9A;
+     color: white;
+     cursor: pointer;
+     padding: 18px;
+     width: 100%;
+     text-align: left;
+     border: none;
+     outline: none;
+     transition: 0.4s;
+     border-color: #79BD9A;
+     border-radius: 4px;
+
+}
+
+.scrollAvisosButton:hover{
+
+        color:#C7F464;
+
+}
+
+.avisoBox:hover{
+
+    border-color:#A7DBD8
+
+
+}
