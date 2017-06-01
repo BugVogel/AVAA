@@ -64,7 +64,7 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
 
           }
 
-          }
+        }
 
 
 
@@ -82,6 +82,12 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
           ");
 
          }
+
+
+
+
+   }
+   else{  //Pega do array que esta no link
 
 
 
@@ -178,20 +184,20 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
                               }
 
                             }
-                          
+
 
                       ?>
 
 
                       <div class="col-md-12 col-xs-12 col-md-offset-4 col-xs-offset-3">
-                     <form name="paginacao" method="get" action="">
+                     <form name="paginacao" method="POST" action="#?go=paginacao">
 
                         <div  class="btn-toolbar">
                           <div class="btn-group" >
-                            <button type="button" name="b1" onlick="javascript:setPag(1,'pagination')" class="btn btn-warning">1</button>
-                            <button type="button" name="b2" onlick="javascript:setPag(2, 'pagination')" class="btn btn-warning">2</button>
-                            <button type="button" name="b3" onlick="javascript:setPag(3,'pagination')" class="btn btn-warning">3</button>
-                            <button type="submit" name="b4" value = "4" class="btn btn-warning">4</button>
+                            <button type="submit" name="b1" class="btn btn-warning">1</button>
+                            <button type="submit" name="b2"  class="btn btn-warning">2</button>
+                            <button type="submit" name="b3"  class="btn btn-warning">3</button>
+                            <button type="submit" name="b4"  class="btn btn-warning">4</button>
                           </div>
                         </div>
                       </div>
@@ -280,7 +286,19 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
 </html>
 
 <!-- Atualizar paginação-->
+<?php
 
+ if(@$_GET['go'] == 'paginacao'){
+
+ echo"fooi";
+
+
+ }
+
+
+
+
+ ?>
 
 <?php
 

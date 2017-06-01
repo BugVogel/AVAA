@@ -72,8 +72,9 @@ function excluir() {
 }
 
 function excluirTurma(){
-    $nTurmas = count($_POST['turmas']);
-    if($nTurmas > 0){
+
+
+    if(isset($_POST['turmas'])){
 
         foreach ($_POST['turmas'] as $remove_item) {
             mysql_query("DELETE FROM turma_alunos WHERE ID_turma=$remove_item");
@@ -83,8 +84,8 @@ function excluirTurma(){
         echo "<meta http-equiv='refresh' content='1, url=../view/minhasTurmas.php'>";
     }
     else{
-        echo "<script>alert('Nenhuma turma selecionada');</script>";
-        echo "<meta http-equiv='refresh' content='1, url=../view/minhasTurmas.php'>";
+        echo "<script>alert('Você não selecionou nenhuma turma');</script>";
+        echo "<meta http-equiv='refresh' content='0, url=../view/minhasTurmas.php'>";
     }
 }
 function redCadastrarAtividade(){
@@ -99,9 +100,19 @@ function redCadastrarAtividade(){
 }
 
 function cadastrarAtividade(){
+
+ if(isset($_POST['turmas'])){
     $turmas = $_POST['turmas'];
     $str_turmas = implode(",", $turmas);
     echo "<meta http-equiv='refresh' content='0, url=../view/selecaoNivel.php?turmas=$str_turmas'>";
+  }
+  else{
+    echo "<script>alert('Você não selecionou nenhuma turma')</script>";
+    echo "<meta http-equiv='refresh' content='0,url=../view/minhasTurmas.php'/>";
+
+  }
+
+
 }
 
 function salvarAtividadeFacil(){
@@ -146,13 +157,21 @@ function editarAtividade(){
 
 function cadastroAviso(){
 
+if(isset($_POST['turmas'])){
+
 $turmas = $_POST['turmas'];
 
 $str_turmas = implode(",", $turmas);
 
 echo "<meta http-equiv='refresh'  content='0, url=../view/cadastroAviso.php?turmas=$str_turmas'  />";
 
+}
+else{
+echo "<script>alert('Você não selecionou nenhuma turma')</script>";
+echo "<meta http-equiv='refresh' content='0,url=../view/minhasTurmas.php'/>";
 
+
+}
 
 }
 

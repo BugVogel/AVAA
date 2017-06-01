@@ -58,7 +58,7 @@ if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) 
                                     <ul class="nav masthead-nav">
                                         <li><a href="principalAluno.php">Início</a></li>
                                         <li class="active"><a href="minhasTurmasAluno.php">Minhas turmas</a></li>
-                                        <li><a href="#">Avisos</a></li>
+                                        <li><a href="avisoAluno.php">Avisos</a></li>
                                         <li><a href="?go=sair">Logoff</a></li>
                                     </ul>
                                 </nav>
@@ -83,7 +83,8 @@ if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) 
                                     $res = mysql_query("select * from turma_alunos WHERE `ID_aluno` = '$email'");
                                     $nLinhas = mysql_num_rows($res);
                                     if ($nLinhas > 0) {
-                                        echo "<table align='center' border=2 cellspacing=3 cellpadding=2><tr><td><b>&emsp; DISCIPLINA &emsp;</b></td><td><b>&emsp; PROFESSOR &emsp;</b></td></tr>";
+                                        echo "<h3 style='text-align:center'> Turmas Cadastradas</h3><br>";
+                                        echo "<table class='table'align='center' border=2 cellspacing=3 cellpadding=2><tr><td><b>&emsp; DISCIPLINA &emsp;</b></td><td><b>&emsp; PROFESSOR &emsp;</b></td></tr>";
 
                                         /* Enquanto houver dados na tabela para serem mostrados será executado tudo que esta dentro do while */
 
@@ -106,12 +107,8 @@ if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) 
 
 
                                         echo "</table>"; /* fecha a tabela apos termino de impressão das linhas */
-                                        echo "<br>";
-                                        echo "<a type=\"button\" value=\"Excluir turma(s)\" class=\"btn btn-danger\" onclick=\"javascript:doPost('formulario', 'excluirTurma');\">Excluir turma(s)</a>";
-                                        echo "&emsp;";
-                                        echo "<a type=\"button\" class=\"btn btn-warning\" value=\"Cadastrar aviso\">Cadastrar aviso</a>";
-                                        echo "&emsp;";
-                                        echo "<a type=\"button\" class=\"btn btn-info\" value=\"Cadastrar atividade\" onclick=\"javascript:doPost('formulario', 'cadastrarAtividade');\">Cadastrar atividade</a>";
+
+
                                     }
                                     else{
                                         echo "<h3 class=cover-heading style=padding: 2px;>" . "Não há turmas cadastradas!" . "</h3>";

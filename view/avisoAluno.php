@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <?php
+require_once 'conexao.php';
 session_start();
 if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
     echo "<meta http-equiv='refresh' content='0, url=index.php'>";
@@ -27,7 +28,7 @@ else{
         <!-- Custom styles for this template -->
         <link href="../cover.css" rel="stylesheet">
         <link href="../signin.css" rel="stylesheet">
-
+        <link href="../css/style2.css" rel="stylesheet">
         <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
         <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
         <script src="../js/ie-emulation-modes-warning.js"></script>
@@ -50,12 +51,12 @@ else{
 
                     <div class="masthead clearfix">
                         <div class="inner">
-                            <h3 class="masthead-brand">AVAA</h3>
+
                             <nav>
                                 <ul class="nav masthead-nav">
-                                    <li class="active"><a href="#">Início</a></li>
+                                    <li><a href="principalAluno.php">Início</a></li>
                                     <li><a href="minhasTurmasAluno.php">Minhas turmas</a></li>
-                                    <li><a href="avisoAluno.php">Avisos</a></li>
+                                    <li class="active"><a href="#">Avisos</a></li>
                                     <li><a href="?go=sair">Logoff</a></li>
                                 </ul>
                             </nav>
@@ -63,11 +64,51 @@ else{
                     </div>
 
                     <div class="inner cover">
-                        <h2 class="cover-heading" style="padding: 2px;">Ambiente Virtual de Aprendizagem de Algoritmos</h2>
-                        <!-- <p class="lead"> <h4>Este é um ambiente para auxiliar no processo de aprendizagem de algoritmos, possibilitando a resolução de problemas com feedbacks instântaneos, além de permitir a comunicação com o professor da disciplina. </h4></p>
-                        <p class="lead">
-                          <a href="#" class="btn btn-lg btn-default">Saiba mais</a>
-                        </p> -->
+                        <h2 class="cover-heading" style="padding: 2px;">Avisos Cadastrados</h2>
+                      <?php
+                           $email = $_SESSION['usuario_session'];
+                           $turmasQuery = mysql_query("SELECT * FROM  `turma_alunos` WHERE `ID_aluno` = '$email'");
+                           $achou = FALSE;
+                           if(mysql_num_rows($turmasQuery)>0){ //Esta ou não cadastrado em uma turma
+
+                              while($turma = mysql_fetch_array($turmasQuery)){
+
+                                    $ID = $turma['ID_turma'];
+                                    $avisoQuery = mysql_query("SELECT * FROM `aviso` WHERE `ID_Turma` = '$ID'");
+
+                                    if(mysql_num_rows($avisoQuery)>0){//Existe aviso ou não
+                                      $achou = TRUE;
+                                      while($aviso = mysql_fetch_array($avisoQuery)){
+
+
+                                        $turmasTable = mysql_query("SELECT * FROM `turma` WHERE `ID` = '$ID'");
+                                        $turmaInfo = mysql_fetch_array($turmasTable);
+
+                                        echo "<button class='scrollAvisosButton '>". $aviso['Titulo']."</button>
+                                       <div class='avisoBox'style='border-radius:4px;background-color:#79BD9A;color:white;max-height:0;overflow:hidden;transition:max-height 0.2s ease-out;' >
+                                         ". $aviso['Texto']. "<br><p style='position:relative;right:10px;top:5px;font-size:10px;color:black; text-align:right'>".$turmaInfo['Disciplina']."<br>".$turmaInfo['Professor']."<br>". $aviso['Nome_Professor'] ."<br>". $aviso['Data'] ."
+                                       </div><br>";
+
+
+                                      }
+
+
+                                    }
+                                    if(!$achou)
+                                      echo "<h3>Não existem avisos cadastrados</h3>";
+
+
+                              }
+
+                           }
+                           else{
+
+                             echo "<h3>Você não esta cadastrado em nenhuma turma</h3>";
+                           }
+
+
+
+                       ?>
                     </div>
 
                     <form class="form-signin" method="POST" action="?go=logar">
@@ -96,6 +137,7 @@ else{
         <script src="../../dist/js/bootstrap.min.js"></script>
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
         <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+        <script src="../js/codeBasic.js"  type="text/javascript"></script>
     </body>
 </html>
 

@@ -84,7 +84,7 @@ if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) 
                                     $res = mysql_query("select * from turma WHERE `Professor` = '$email'");
                                     $nLinhas = mysql_num_rows($res);
                                     if ($nLinhas > 0) {
-                                        echo "<table 'align='center' border=2 cellspacing=3 cellpadding=2><tr><td><b>&emsp; DISCIPLINA &emsp;</b></td><td><b>&emsp; INSTITUIÇÃO &emsp;</b></td><td></td></tr>";
+                                        echo "<table  class='table''align='center' border=2 cellspacing=3 cellpadding=2><tr><td><b>&emsp; DISCIPLINA &emsp;</b></td><td><b>&emsp; INSTITUIÇÃO &emsp;</b></td><td></td></tr>";
 
                                         /* Enquanto houver dados na tabela para serem mostrados será executado tudo que esta dentro do while */
                                         while ($escrever = mysql_fetch_array($res)) {
