@@ -1,6 +1,7 @@
 <?php
 require_once 'conexao.php';
 session_start();
+$_SESSION['atualiza'] = 1;
 if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) {
     echo "<meta http-equiv='refresh' content='0, url=index.php'>";
 } else {
@@ -58,7 +59,6 @@ if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) 
                                     <ul class="nav masthead-nav">
                                         <li><a href="principalAluno.php">Início</a></li>
                                         <li class="active"><a href="minhasTurmasAluno.php">Minhas turmas</a></li>
-                                        <li><a href="avisoAluno.php">Avisos</a></li>
                                         <li><a href="?go=sair">Logoff</a></li>
                                     </ul>
                                 </nav>
@@ -72,8 +72,8 @@ if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) 
 
 
                             <div align="center" style="font-size:20px;">
-                                <form class="" method="post" action="../model/action.php" name="formulario"  id="formulario">
-                                    <input type="hidden" id="action" name="action" />
+                                <form class="" method="post" action="../model/action.php" name="formulario"  id="formulario3">
+                                    <input type="hidden" id="action3" name="action" />
 
 
                                     <br>
@@ -84,7 +84,7 @@ if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) 
                                     $nLinhas = mysql_num_rows($res);
                                     if ($nLinhas > 0) {
                                         echo "<h3 style='text-align:center'> Turmas Cadastradas</h3><br>";
-                                        echo "<table class='table'align='center' border=2 cellspacing=3 cellpadding=2><tr><td><b>&emsp; DISCIPLINA &emsp;</b></td><td><b>&emsp; PROFESSOR &emsp;</b></td></tr>";
+                                        echo "<table class='table'align='center' border=2 cellspacing=3 cellpadding=2><tr><td><b>&emsp; DISCIPLINA &emsp;</b></td><td><b>&emsp; PROFESSOR &emsp;</b></td><td></td></tr>";
 
                                         /* Enquanto houver dados na tabela para serem mostrados será executado tudo que esta dentro do while */
 
@@ -96,8 +96,8 @@ if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) 
 
                                        while($escreve = mysql_fetch_array($turmas)){
 
-                                         echo "<tr><td>"."<b>" . $escreve['Disciplina'] . "&emsp;" ."</b>"."</td><td>" . "" . $escreve['Professor'] . "</td></tr>";
-
+                                         echo "<tr><td>"."<b>" . $escreve['Disciplina'] . "&emsp;" ."</b>"."</td><td>" . "" . $escreve['Professor'] . "</td><td>" .
+                                        "<input name=\"turmas[]\" type=\"checkbox\" id=\"turmas[]\" value=" . $escreve['ID'] . "></td></tr>";
                                          /* Escreve cada linha da tabela */
 
                                        }/* Fim do while interno*/
@@ -107,6 +107,12 @@ if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) 
 
 
                                         echo "</table>"; /* fecha a tabela apos termino de impressão das linhas */
+                                        echo "<br>";
+                                        echo "<a type=\"button\" value=\"Resolver Exercicios\" class=\"btn btn-success\" onclick=\"javascript:doPostForm3('formulario3', 'chamaResolverExercicios);\">Resolver Exercício(s)</a>";
+                                        echo "&emsp;";
+                                        echo "<a type=\"button\" class=\"btn btn-warning\" value=\"Avisos Aluno\" onclick=\"javascript:doPostForm3('formulario3', 'chamaAvisos')\">Avisos</a>";
+
+
 
 
                                     }

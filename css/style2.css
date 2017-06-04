@@ -12,8 +12,23 @@
      transition: 0.4s;
      border-color: #79BD9A;
      border-radius: 4px;
+     content:'\02795';
 
 }
+
+button.scrollAvisosButton:after{
+
+content: '\02795';
+float:right;
+
+
+}
+button.scrollAvisosButton.active:after{
+
+ content: "\2796";
+
+}
+
 
 .scrollAvisosButton:hover{
 

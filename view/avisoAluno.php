@@ -7,6 +7,101 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
 }
 else{
 ?>
+
+<!-- Atualiza array para imprimir avisos na tela-->
+<?php
+
+//Função para recolher avisos (deve vim antes)
+function pegarAvisos($query2, $info2, &$mensagem, $disciplina, $emailContato, $professor){
+
+   if( $info2 = mysql_fetch_array($query2)){
+
+      pegarAvisos($query2, $info2, $mensagem, $disciplina, $emailContato, $professor);
+
+   }
+   else{ //Fim da tabela no banco de dados
+     return;
+   }
+
+  $data = $info2['Data'];
+  //Mensagem para utilizar no lugar correto
+   array_push($mensagem,"
+
+
+        <button class='scrollAvisosButton '>". $info2['Titulo']."</button>
+       <div class='avisoBox'style='border-radius:4px;background-color:#79BD9A;color:white;max-height:0;overflow:hidden;transition:max-height 0.2s ease-out;' >
+         ". $info2['Texto']. "<br><p style='position:relative;right:10px;top:5px;font-size:10px;color:black; text-align:right'>".$disciplina."<br>".$emailContato."<br>". $professor ."<br>". $data ."
+       </div><br>
+
+
+   ");
+
+
+
+}
+
+
+
+
+  $mensagem = array();
+
+
+  if(isset($_GET['turmas'])){
+
+
+
+         $turmas = explode(",",$_GET['turmas']);
+
+
+
+      //Procura avisos das turmas selecionadas
+        for($i =0; $i<sizeof($turmas); $i++){
+
+
+           //Pega nome da disciplina e dados do professor
+           $query1 = mysql_query("SELECT * FROM `turma` WHERE `ID` ='$turmas[$i]'");
+           $info1 = mysql_fetch_array($query1);
+           $emailContato = $info1['Professor'];
+           $professorQuery = mysql_query("SELECT * FROM `professor` WHERE `Email` = '$emailContato'");
+           $professorDB = mysql_fetch_array($professorQuery);
+           $disciplina = $info1['Disciplina'];
+           $professor = $professorDB['Nome'];
+
+
+           $ID = $turmas[$i];
+           //Pega avisos cadastrados
+           $query2 = mysql_query("SELECT * FROM `aviso` WHERE `ID_Turma` = '$ID' ");
+
+           //Verifica se tem aviso
+           if(mysql_num_rows($query2) > 0){
+
+
+            //Conseguiu achar algum aviso
+
+            $info2 = array();
+
+            pegarAvisos($query2, $info2, $mensagem, $disciplina, $emailContato, $professor);
+
+
+
+        }
+
+
+
+         }
+
+
+
+
+   }
+
+
+
+
+
+ ?>
+
+
 <html lang="pt">
     <head>
         <meta charset="utf-8">
@@ -65,56 +160,206 @@ else{
 
                     <div class="inner cover">
                         <h2 class="cover-heading" style="padding: 2px;">Avisos Cadastrados</h2>
+
+                        <!-- Imprimi avisos, caso existam e  Atualizar paginação -->
                       <?php
-                           $email = $_SESSION['usuario_session'];
-                           $turmasQuery = mysql_query("SELECT * FROM  `turma_alunos` WHERE `ID_aluno` = '$email'");
-                           $achou = FALSE;
-                           if(mysql_num_rows($turmasQuery)>0){ //Esta ou não cadastrado em uma turma
+                      //Seta avisos iniciais sem POST
+                     if($_SESSION['atualiza'] != 0){
+                       $espaços = 0;
+                       $numElement = sizeof($mensagem);
+                       if($numElement > 0){ //Tem aviso para a pagina 1
 
-                              while($turma = mysql_fetch_array($turmasQuery)){
+                          for( $index =0; $index<3; $index++){
 
-                                    $ID = $turma['ID_turma'];
-                                    $avisoQuery = mysql_query("SELECT * FROM `aviso` WHERE `ID_Turma` = '$ID'");
+                             if($index < $numElement){ //Se tiver menos de 3 avisos, é tratado
+                             echo $mensagem[$index];
+                             $espaços++;
+                             }
 
-                                    if(mysql_num_rows($avisoQuery)>0){//Existe aviso ou não
-                                      $achou = TRUE;
-                                      while($aviso = mysql_fetch_array($avisoQuery)){
+                          }
+
+                          switch($espaços){ //Ajusta espaços para botões de paginação
+
+                           case 0: break;
+                           case 1: echo "<br><br><br><br><br><br><br><br>"; break;
+                           case 2: echo "<br><br><br><br>"; break;
+                           default :
+
+                          }
+
+                          $_SESSION['atualiza'] = 0;
+                       }
+                       else{ //Não possui avisos suficientes para esta pagina
+
+                         echo "<h4>Não existem avisos Cadastrados</h4>
+                         <br><br><br><br><br><br><br><br><br><br>";
+                         $_SESSION['atualiza'] = 0;
+                       }
 
 
-                                        $turmasTable = mysql_query("SELECT * FROM `turma` WHERE `ID` = '$ID'");
-                                        $turmaInfo = mysql_fetch_array($turmasTable);
-
-                                        echo "<button class='scrollAvisosButton '>". $aviso['Titulo']."</button>
-                                       <div class='avisoBox'style='border-radius:4px;background-color:#79BD9A;color:white;max-height:0;overflow:hidden;transition:max-height 0.2s ease-out;' >
-                                         ". $aviso['Texto']. "<br><p style='position:relative;right:10px;top:5px;font-size:10px;color:black; text-align:right'>".$turmaInfo['Disciplina']."<br>".$turmaInfo['Professor']."<br>". $aviso['Nome_Professor'] ."<br>". $aviso['Data'] ."
-                                       </div><br>";
+                     }
 
 
-                                      }
+
+                     if(@$_POST['b'] == '1'){
+
+                     $espaços=0;
+                     $numElement = sizeof($mensagem);
+                     if($numElement > 0){ //Tem aviso para a pagina 1
+
+                        for( $index =0; $index<3; $index++){
+
+                           if($index < $numElement){ //Se tiver menos de 3 avisos, é tratado
+                           echo $mensagem[$index];
+                           $espaços++;
+                           }
+
+                        }
+
+                        switch($espaços){ //Ajusta espaços para botões de paginação
+
+                         case 0: break;
+                         case 1: echo "<br><br><br><br><br><br><br><br>"; break;
+                         case 2: echo "<br><br><br><br>"; break;
+                         default :
+
+                        }
+
+                     }
+                     else{ //Não possui avisos suficientes para esta pagina
+
+                       echo "<h4>Não existem avisos Cadastrados</h4>
+                       <br><br><br><br><br><br><br><br><br><br>";
+                     }
 
 
-                                    }
-                                    if(!$achou)
-                                      echo "<h3>Não existem avisos cadastrados</h3>";
 
 
+                     }
+                     if(@$_POST['b'] == '2'){
+
+                       $espaços=0;
+                       $numElement = sizeof($mensagem);
+                       if($numElement > 3){ //Tem aviso para a pagina 2
+
+                          for( $index = 3; $index<6; $index++){
+
+                             if($index < $numElement){ //Se tiver menos de 3 avisos, é tratado
+                             echo $mensagem[$index];
+                             $espaços++;
                               }
 
-                           }
-                           else{
+                          }
 
-                             echo "<h3>Você não esta cadastrado em nenhuma turma</h3>";
-                           }
+                          switch($espaços){ //Ajusta espaços para botões de paginação
+
+                           case 0: break;
+                           case 1: echo "<br><br><br><br><br><br><br><br>"; break;
+                           case 2: echo "<br><br><br><br>"; break;
+                           default :
+
+                          }
+
+                       }
+                       else{ //Não possui avisos suficientes para esta pagina
+
+                         echo "<h4>Não existem avisos Cadastrados</h4>
+                         <br><br><br><br><br><br><br><br><br><br>";
+                       }
+
+
+
+
+                     }
+                     if(@$_POST['b'] == '3'){
+
+
+                       $espaços=0;
+                       $numElement = sizeof($mensagem);
+                       if($numElement > 6){ //Tem aviso para a pagina 3
+
+                          for( $index = 6; $index<9; $index++){
+
+                             if($index < $numElement){ //Se tiver menos de 3 avisos, é tratado
+                             echo $mensagem[$index];
+                             $espaços++;
+                             }
+
+                          }
+
+                          switch($espaços){ //Ajusta espaços para botões de paginação
+
+                           case 0: break;
+                           case 1: echo "<br><br><br><br><br><br><br><br>"; break;
+                           case 2: echo "<br><br><br><br>"; break;
+                           default :
+
+                          }
+
+                       }
+                       else{ //Não possui avisos suficientes para esta pagina
+
+                         echo "<h4>Não existem avisos Cadastrados</h4>
+                         <br><br><br><br><br><br><br><br><br><br>";
+                       }
+
+
+
+
+                     }
+                     if(@$_POST['b'] == '4'){
+
+
+                       $espaços;
+                       $numElement = sizeof($mensagem);
+                       if($numElement > 9){ //Tem aviso para a pagina 4
+
+                          for( $index = 9; $index<12; $index++){
+
+                             if($index < $numElement){ //Se tiver menos de 3 avisos, é tratado
+                             echo $mensagem[$index];
+                             $espaços++;
+                             }
+
+                          }
+
+                          switch($espaços){ //Ajusta espaços para botões de paginação
+
+                           case 0: break;
+                           case 1: echo "<br><br><br><br><br><br><br><br>"; break;
+                           case 2: echo "<br><br><br><br>"; break;
+                           default :
+
+                          }
+
+                       }
+                       else{ //Não possui avisos suficientes para esta pagina
+
+                         echo "<h4>Não existem avisos Cadastrados</h4>
+                         <br><br><br><br><br><br><br><br><br><br>";
+                       }
+
+
+
+                     }
 
 
 
                        ?>
                     </div>
-
-                    <form class="form-signin" method="POST" action="?go=logar">
-
+              <div class="col-md-12 col-xs-12  col-md-offset-1">
+                    <form class="form-signin" method="POST" action="">
+                      <div  class="btn-toolbar">
+                        <div class="btn-group" >
+                          <button type="submit" name="b" value ='1' class="btn btn-warning">1</button>
+                          <button type="submit" name="b" value ='2' class="btn btn-warning">2</button>
+                          <button type="submit" name="b" value ='3' class="btn btn-warning">3</button>
+                          <button type="submit" name="b" value ='4' class="btn btn-warning">4</button>
+                        </div>
+                      </div>
 
                     </form>
+                  </div>
 
 
                     <!-- <div class="mastfoot">

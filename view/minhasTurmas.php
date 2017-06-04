@@ -3,6 +3,7 @@
 <?php
 require_once 'conexao.php';
 session_start();
+$_SESSION['atualiza'] = 1;
 if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) {
     echo "<meta http-equiv='refresh' content='0, url=index.php'>";
 } else {

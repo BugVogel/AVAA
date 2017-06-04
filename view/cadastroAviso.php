@@ -7,20 +7,21 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
     echo "<meta http-equiv='refresh' content='0, url=index.php'>";
 }
 
+
 ?>
 
-<!-- Atualiza tela com avisos-->
+<!-- Atualiza array para imprimir avisos na tela-->
 <?php
 
   $mensagem = array();
-  $cont2=0;
+
 
   if(isset($_GET['turmas'])){
 
 
 
          $turmas = explode(",",$_GET['turmas']);
-         $achou = FALSE;
+
 
 
       //Procura avisos das turmas selecionadas
@@ -44,25 +45,14 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
            //Verifica se tem aviso
            if(mysql_num_rows($query2) > 0){
 
-          while($info2 = mysql_fetch_array($query2)){
+
             //Conseguiu achar algum aviso
-            $achou = TRUE;
-            $data = $info2['Data'];
 
-            //Mensagem para utilizar no lugar correto
-            array_push($mensagem,"
+            $info2 = array();
 
-
-                 <button class='scrollAvisosButton '>". $info2['Titulo']."</button>
-                <div class='avisoBox'style='border-radius:4px;background-color:#79BD9A;color:white;max-height:0;overflow:hidden;transition:max-height 0.2s ease-out;' >
-                  ". $info2['Texto']. "<br><p style='position:relative;right:10px;top:5px;font-size:10px;color:black; text-align:right'>".$disciplina."<br>".$emailContato."<br>". $professor ."<br>". $data ."
-                </div><br>
+            pegarAviso($query2, $info2, $mensagem, $disciplina, $emailContato, $professor);
 
 
-            ");
-
-
-          }
 
         }
 
@@ -71,28 +61,38 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
          }
 
 
-          // Não achou aviso
-         if(!$achou){
-
-          array_push($mensagem,"
-
-          <h4>Não existem avisos Cadastrados</h4>
 
 
-          ");
+   }
 
-         }
+   function pegarAviso($query2, $info2, &$mensagem, $disciplina, $emailContato, $professor){
 
+      if( $info2 = mysql_fetch_array($query2)){
+
+         pegarAviso($query2, $info2, $mensagem, $disciplina, $emailContato, $professor);
+
+      }
+      else{ //Fim da tabela no banco de dados
+        return;
+      }
+
+     $data = $info2['Data'];
+     //Mensagem para utilizar no lugar correto
+      array_push($mensagem,"
+
+
+           <button class='scrollAvisosButton '>". $info2['Titulo']."</button>
+          <div class='avisoBox'style='border-radius:4px;background-color:#79BD9A;color:white;max-height:0;overflow:hidden;transition:max-height 0.2s ease-out;' >
+            ". $info2['Texto']. "<br><p style='position:relative;right:10px;top:5px;font-size:10px;color:black; text-align:right'>".$disciplina."<br>".$emailContato."<br>". $professor ."<br>". $data ."
+          </div><br>
+
+
+      ");
 
 
 
    }
-   else{  //Pega do array que esta no link
 
-
-
-
-   }
 
 
 
@@ -162,47 +162,219 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
 
                     </div>
 
-        <h2 style="text-align:center"> Cadastro de Avisos</h2>
-        <br>
+   <br><br>
 
 
-                    <div  class="inner cover" >
+                    <div  class="inner cover"  >
+                      <h2 style="text-align:center"> Cadastro de Avisos</h2>
+                      <br>
 
                       <div class="col-md-6 col-xs-12" >
                        <h3 class="cover-heading" style="font-size:20px;" > Avisos Cadastrados</h3>
 
 
-                     <!-- Imprimi avisos, caso existam-->
+                     <!-- Imprimi avisos, caso existam e  Atualizar paginação -->
                      <?php
 
 
-                          for( $i=0; $i<sizeof($mensagem); $i++){
+                      //Seta avisos iniciais sem POST
+                     if($_SESSION['atualiza'] != 0){
+                       $espaços = 0;
+                       $numElement = sizeof($mensagem);
+                       if($numElement > 0){ //Tem aviso para a pagina 1
 
-                              echo $mensagem[$i];
-                              if($i == 2){
-                                break;
+                          for( $index =0; $index<3; $index++){
+
+                             if($index < $numElement){ //Se tiver menos de 3 avisos, é tratado
+                             echo $mensagem[$index];
+                             $espaços++;
+                             }
+
+                          }
+
+                          switch($espaços){ //Ajusta espaços para botões de paginação
+
+                           case 0: break;
+                           case 1: echo "<br><br><br><br><br><br><br><br>"; break;
+                           case 2: echo "<br><br><br><br>"; break;
+                           default :
+
+                          }
+
+                          $_SESSION['atualiza'] = 0;
+                       }
+                       else{ //Não possui avisos suficientes para esta pagina
+
+                         echo "<h4>Não existem avisos Cadastrados</h4>
+                         <br><br><br><br><br><br><br><br><br><br>";
+                         $_SESSION['atualiza'] = 0;
+                       }
+
+
+                     }
+
+
+
+                     if(@$_POST['b'] == '1'){
+
+                     $espaços=0;
+                     $numElement = sizeof($mensagem);
+                     if($numElement > 0){ //Tem aviso para a pagina 1
+
+                        for( $index =0; $index<3; $index++){
+
+                           if($index < $numElement){ //Se tiver menos de 3 avisos, é tratado
+                           echo $mensagem[$index];
+                           $espaços++;
+                           }
+
+                        }
+
+                        switch($espaços){ //Ajusta espaços para botões de paginação
+
+                         case 0: break;
+                         case 1: echo "<br><br><br><br><br><br><br><br>"; break;
+                         case 2: echo "<br><br><br><br>"; break;
+                         default :
+
+                        }
+
+                     }
+                     else{ //Não possui avisos suficientes para esta pagina
+
+                       echo "<h4>Não existem avisos Cadastrados</h4>
+                       <br><br><br><br><br><br><br><br><br><br>";
+                     }
+
+
+
+
+                     }
+                     if(@$_POST['b'] == '2'){
+
+                       $espaços=0;
+                       $numElement = sizeof($mensagem);
+                       if($numElement > 3){ //Tem aviso para a pagina 2
+
+                          for( $index = 3; $index<6; $index++){
+
+                             if($index < $numElement){ //Se tiver menos de 3 avisos, é tratado
+                             echo $mensagem[$index];
+                             $espaços++;
                               }
 
-                            }
+                          }
+
+                          switch($espaços){ //Ajusta espaços para botões de paginação
+
+                           case 0: break;
+                           case 1: echo "<br><br><br><br><br><br><br><br>"; break;
+                           case 2: echo "<br><br><br><br>"; break;
+                           default :
+
+                          }
+
+                       }
+                       else{ //Não possui avisos suficientes para esta pagina
+
+                         echo "<h4>Não existem avisos Cadastrados</h4>
+                         <br><br><br><br><br><br><br><br><br><br>";
+                       }
+
+
+
+
+                     }
+                     if(@$_POST['b'] == '3'){
+
+
+                       $espaços=0;
+                       $numElement = sizeof($mensagem);
+                       if($numElement > 6){ //Tem aviso para a pagina 3
+
+                          for( $index = 6; $index<9; $index++){
+
+                             if($index < $numElement){ //Se tiver menos de 3 avisos, é tratado
+                             echo $mensagem[$index];
+                             $espaços++;
+                             }
+
+                          }
+
+                          switch($espaços){ //Ajusta espaços para botões de paginação
+
+                           case 0: break;
+                           case 1: echo "<br><br><br><br><br><br><br><br>"; break;
+                           case 2: echo "<br><br><br><br>"; break;
+                           default :
+
+                          }
+
+                       }
+                       else{ //Não possui avisos suficientes para esta pagina
+
+                         echo "<h4>Não existem avisos Cadastrados</h4>
+                         <br><br><br><br><br><br><br><br><br><br>";
+                       }
+
+
+
+
+                     }
+                     if(@$_POST['b'] == '4'){
+
+
+                       $espaços;
+                       $numElement = sizeof($mensagem);
+                       if($numElement > 9){ //Tem aviso para a pagina 4
+
+                          for( $index = 9; $index<12; $index++){
+
+                             if($index < $numElement){ //Se tiver menos de 3 avisos, é tratado
+                             echo $mensagem[$index];
+                             $espaços++;
+                             }
+
+                          }
+
+                          switch($espaços){ //Ajusta espaços para botões de paginação
+
+                           case 0: break;
+                           case 1: echo "<br><br><br><br><br><br><br><br>"; break;
+                           case 2: echo "<br><br><br><br>"; break;
+                           default :
+
+                          }
+
+                       }
+                       else{ //Não possui avisos suficientes para esta pagina
+
+                         echo "<h4>Não existem avisos Cadastrados</h4>
+                         <br><br><br><br><br><br><br><br><br><br>";
+                       }
+
+
+
+                     }
 
 
                       ?>
 
 
                       <div class="col-md-12 col-xs-12 col-md-offset-4 col-xs-offset-3">
-                     <form name="paginacao" method="POST" action="#?go=paginacao">
+                     <form name="paginacao" method="POST" action="" >
 
                         <div  class="btn-toolbar">
                           <div class="btn-group" >
-                            <button type="submit" name="b1" class="btn btn-warning">1</button>
-                            <button type="submit" name="b2"  class="btn btn-warning">2</button>
-                            <button type="submit" name="b3"  class="btn btn-warning">3</button>
-                            <button type="submit" name="b4"  class="btn btn-warning">4</button>
+                            <button type="submit" name="b" value ='1' class="btn btn-warning">1</button>
+                            <button type="submit" name="b" value ='2' class="btn btn-warning">2</button>
+                            <button type="submit" name="b" value ='3' class="btn btn-warning">3</button>
+                            <button type="submit" name="b" value ='4' class="btn btn-warning">4</button>
                           </div>
                         </div>
-                      </div>
-                    </form>
 
+                    </form>
+                   </div>
                       </div>
 
 
@@ -228,12 +400,12 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
                        ?>
                       <label for="titulo" style="text-align:left;font-size:15px;position:relative;right:95px;">Título do aviso</label>
                       <br>
-                      <input type="text" class="form-control" name="titulo" id="titulo" required placeholder="Título" maxlength="20" style="color:black;text-align:left;border-radius:10px;position:relative;right:3px;"></input>
+                      <input type="text" class="form-control" name="titulo" id="titulo" required placeholder="Título" maxlength="50" style="color:black;text-align:left;border-radius:10px;position:relative;right:3px;"></input>
                       <br>
                       <br>
                       <label for="aviso" style="text-align:left;font-size:15px;position:relative;right:95px;">Texto do Aviso</label>
                       <br>
-                      <textarea id="aviso" class="form-control" style="color:black;text-align:left;border-radius:10px;" required name="aviso" rows="5" cols="50" placeholder="Mensagem"> </textarea>
+                      <textarea id="aviso" class="form-control" maxlength="416"; style="color:black;text-align:left;border-radius:10px;" required name="aviso" rows="5" cols="50" placeholder="Mensagem"> </textarea>
                       <br>
                       <a type="button" class="btn btn-warning" value="Cadastrar aviso" onclick="javascript:doPostForm2('formulario2', 'cadastrarAviso');">Cadastrar aviso</a>
 
@@ -277,7 +449,7 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
         <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
         <script src="../js/codeBasic.js"  type="text/javascript"></script>
-
+        <script src ="../js/funcoes.js" type="text/javascript"></script>
 <!-- Uso temporário Não consigo importar o funcoes.js-->
 
 
@@ -285,20 +457,8 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
     </body>
 </html>
 
-<!-- Atualizar paginação-->
-<?php
-
- if(@$_GET['go'] == 'paginacao'){
-
- echo"fooi";
 
 
- }
-
-
-
-
- ?>
 
 <?php
 

@@ -230,7 +230,9 @@ function cadastrarAviso(){
           mysql_query("INSERT INTO `aviso` (`ID`, `Titulo`, `Texto`, `Data`, `ID_Turma`, `Nome_Professor`) VALUES ('$ID', '$titulo', '$texto', '$data','$turma','$nome')");
           $numTurma = $_POST['turmas'];
 
-          echo "<meta http-equiv='refresh' content='0, url=../view/cadastroAviso.php?turmas=$numTurma'?pag=1 />";
+          $_SESSION['atualiza']=1;
+          echo "<meta http-equiv='refresh' content='0, url=../view/cadastroAviso.php?turmas=$numTurma' />";
+
 
           }
 
@@ -243,7 +245,32 @@ function cadastrarAviso(){
 }
 
 
+function chamaAvisos(){
 
+      if(isset($_POST['turmas'])){
+
+          $turmas = implode(',',$_POST['turmas']);
+
+          echo "<meta http-equiv='refresh' content='0, url=../view/avisoAluno.php?turmas=$turmas'/>";
+
+
+      }
+      else{
+
+        echo "<script>alert('Você não selecionou nenhuma turma')</script>";
+        echo "<meta http-equiv='refresh' content='0,url=../view/minhasTurmasAluno.php'/>";
+
+
+
+      }
+
+
+
+
+
+
+
+}
 
 
 

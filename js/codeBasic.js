@@ -1,21 +1,7 @@
 
 
 
-
-
-function doPostForm2(formName, actionName)
-{
-
-
-	var hiddenControl = document.getElementById('action2');
-	var theForm = document.getElementById(formName);
-
-	hiddenControl.value = actionName;
-	theForm.submit();
-}
-
-
-var acc = document.getElementsByClassName("scrollAvisosButton");
+  var acc = document.getElementsByClassName("scrollAvisosButton");
 	var i;
 
 
@@ -26,10 +12,38 @@ var acc = document.getElementsByClassName("scrollAvisosButton");
 			var panel = this.nextElementSibling;
 			if (panel.style.maxHeight == "0px"){
 
+       //Antes de abrir, vai fechar o anterior
+
+				var panel2 = document.getElementsByClassName("avisoBox");
+				for(var a = 0; a<panel2.length; a++){
+
+            if(panel2[a].style.maxHeight != "0px"){ //Achou um aberto
+
+							panel2[a].style.maxHeight = "0px"; //Fecha
+              var acc2 = document.getElementsByClassName("scrollAvisosButton");
+              for(var b = 0; b< acc2.length; b++){ //Procura o button desse panel que estava aberto
+
+                if(acc2[b].nextElementSibling == panel2[a]){
+
+          
+                  acc2[b].style.content = '\\02795'; //Muda sinal para +
+                }
+
+
+              }
+
+
+
+						}
+
+				}
+       //Abre o selecionado
 				panel.style.maxHeight = panel.scrollHeight + "px";
 
 
-			} else {
+
+
+			} else { //Fecha o selecionado
 				panel.style.maxHeight ="0px";
 
 
@@ -45,7 +59,7 @@ var acc = document.getElementsByClassName("scrollAvisosButton");
 
 	 input.value = pagina;
 	 theForm.submit();
-	
+
 
 
 

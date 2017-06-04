@@ -55,7 +55,6 @@ else{
                                 <ul class="nav masthead-nav">
                                     <li class="active"><a href="#">Início</a></li>
                                     <li><a href="minhasTurmasAluno.php">Minhas turmas</a></li>
-                                    <li><a href="avisoAluno.php">Avisos</a></li>
                                     <li><a href="?go=sair">Logoff</a></li>
                                 </ul>
                             </nav>
