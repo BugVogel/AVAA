@@ -175,8 +175,6 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
 
                      <!-- Imprimi avisos, caso existam e  Atualizar paginação -->
                      <?php
-
-
                       //Seta avisos iniciais sem POST
                      if($_SESSION['atualiza'] != 0){
                        $espaços = 0;
@@ -205,15 +203,13 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
                        }
                        else{ //Não possui avisos suficientes para esta pagina
 
-                         echo "<h4>Não existem avisos Cadastrados</h4>
+                         echo "<div style='text-shadow:none' class='alert alert-danger' role='alert'><h4 class='alert-heading'><strong>Atenção </strong> </h4>Não existem avisos Cadastrados.</div>
                          <br><br><br><br><br><br><br><br><br><br>";
                          $_SESSION['atualiza'] = 0;
                        }
 
 
                      }
-
-
 
                      if(@$_POST['b'] == '1'){
 
@@ -242,14 +238,14 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
                      }
                      else{ //Não possui avisos suficientes para esta pagina
 
-                       echo "<h4>Não existem avisos Cadastrados</h4>
+                       echo "<div style='text-shadow:none' class='alert alert-danger' role='alert'><h4 class='alert-heading'><strong>Atenção </strong> </h4>Não existem avisos Cadastrados.</div>
                        <br><br><br><br><br><br><br><br><br><br>";
                      }
 
 
 
-
                      }
+
                      if(@$_POST['b'] == '2'){
 
                        $espaços=0;
@@ -277,7 +273,7 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
                        }
                        else{ //Não possui avisos suficientes para esta pagina
 
-                         echo "<h4>Não existem avisos Cadastrados</h4>
+                         echo "<div style='text-shadow:none' class='alert alert-danger' role='alert'><h4 class='alert-heading'><strong>Atenção </strong> </h4>Não existem avisos Cadastrados.</div>
                          <br><br><br><br><br><br><br><br><br><br>";
                        }
 
@@ -313,7 +309,7 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
                        }
                        else{ //Não possui avisos suficientes para esta pagina
 
-                         echo "<h4>Não existem avisos Cadastrados</h4>
+                         echo "<div style='text-shadow:none' class='alert alert-danger' role='alert'><h4 class='alert-heading'><strong>Atenção </strong> </h4>Não existem avisos Cadastrados.</div>
                          <br><br><br><br><br><br><br><br><br><br>";
                        }
 
@@ -349,7 +345,7 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
                        }
                        else{ //Não possui avisos suficientes para esta pagina
 
-                         echo "<h4>Não existem avisos Cadastrados</h4>
+                         echo "<div style='text-shadow:none' class='alert alert-danger' role='alert'><h4 class='alert-heading'><strong>Atenção </strong> </h4>Não existem avisos Cadastrados.</div>
                          <br><br><br><br><br><br><br><br><br><br>";
                        }
 

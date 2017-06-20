@@ -145,91 +145,26 @@ require_once 'conexao.php';
                 echo 'history.back();';
             } else {
 
-              $corpo = montarCorpoEmail($nome,$hashCode);
-              $envio = enviaEmail($destino, $corpo);
 
-             if($envio){
+
+             if(filter_var($email, FILTER_VALIDATE_EMAIL)){
 
                 mysql_query("INSERT INTO `aluno` (`Nome`, `Curso`, `Semestre`, `Email`, `Senha`, `HashCode`, `Email Confirmado`) VALUES ('$nome', '$curso', '$semestre', '$email', '$senha', '$hashCode', '0')");
                 echo '<script language="javascript">';
-                echo 'alert("Para completar o cadastro verifique o e-mail enviado ao e-mail fornecido")';
+                echo 'alert("Cadastro realizado com sucesso!")';
                 echo '</script>';
                 echo "<meta http-equiv='refresh' content='0, url=index.php'>";
 
               }
               else{
 
-                  echo '<script language="javascript"> alert("E-mail fornecido não existe") </script>';
+                  echo '<script language="javascript"> alert("E-mail fornecido não é válido") </script>';
 
 
               }
             }
         }
     }
-
-
-            function enviaEmail($destino, $corpo){
-
-
-
-                    $headers  = 'MIME-Version: 1.0' . "\r\n";
-                    $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-                    $headers .= 'From: $nome <$email>';
-                    $headers .= "Bcc: $EmailPadrao\r\n";
-
-
-
-            return   mail($destino, "Confirmação de Email -AVAA", $corpo, $headers);
-
-
-
-
-            }
-
-
-            function montarCorpoEmail($nome, $hashCode){
-
-                $corpo = "
-
-                <style>
-
-                body {
-                  margin:0px;
-                  font-family:Verdane;
-                  font-size:12px;
-                  color: #fff;
-                  text-aling:center;
-
-                  }
-
-                </style>
-
-                <html>
-
-                <h1> Olá $nome </h1>
-
-                <p> Você acaba de enviar uma solicitação de cadastro ao AVAA, para \n completar o seu cadastrado
-                você deve copiar o código abaixo e acessar\n o link enviado. </p>
-
-
-
-                <li> Link para completar o cadastro: $hashCode </li>
-                <li> Código para confirmação: </li>
-
-
-
-                <p>Att, Equipe AVAA.</p>
-
-
-                </html>
-
-
-                ";
-
-                return $corpo;
-
-            }
-
 
 
 

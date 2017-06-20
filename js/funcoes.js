@@ -5,7 +5,7 @@
  */
 function doPost(formName, actionName)
 {
-	
+
 	var hiddenControl = document.getElementById('action');
 	var theForm = document.getElementById(formName);
 
@@ -29,6 +29,17 @@ function doPostForm3(formName, actionName)
 
 
 	var hiddenControl = document.getElementById('action3');
+	var theForm = document.getElementById(formName);
+
+	hiddenControl.value = actionName;
+	theForm.submit();
+}
+
+function doPostForm4(formName, actionName)
+{
+
+
+	var hiddenControl = document.getElementById('action4');
 	var theForm = document.getElementById(formName);
 
 	hiddenControl.value = actionName;

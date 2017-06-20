@@ -130,13 +130,8 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
         } else {
             $query1 = mysql_num_rows(mysql_query("SELECT * FROM `aluno` WHERE `Email` = '$email' AND `Senha` = '$senha'"));
             if ($query1 == 1) {
-              $query2 = mysql_fetch_array(mysql_query("SELECT * FROM `aluno` WHERE `Email` = '$email' AND `Senha` = '$senha'"));
 
-              $pendencia = $query2['Email Confirmado'];
-
-
-
-              if($pendencia){
+              if(filter_var($email, FILTER_VALIDATE_EMAIL)){
                 $_SESSION['usuario_session'] = $email;
                 $_SESSION['senha_session'] = $senha;
                 echo '<script language="javascript">';
@@ -145,16 +140,13 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
                 echo "<meta http-equiv='refresh' content='0, url=principalAluno.php'>";
               }
               else{
-                echo '<script language = "javascript"> alert("Verificação de e-mail pendente") </script>';
+                echo '<script language = "javascript"> alert("Atenção, insira um email válido") </script>';
               }
             } else {
                 $query1 = mysql_num_rows(mysql_query("SELECT * FROM `professor` WHERE `Email` = '$email' AND `Senha` = '$senha'"));
                 if ($query1 == 1) {
 
-                    $query2 = mysql_fetch_array(mysql_query("SELECT * FROM `professor` WHERE `Email` = '$email' AND `Senha` ='$senha'"));
-                    $pendencia = $query2['Email Confirmado'];
-
-                  if($pendencia){
+                  if(filter_var($email, FILTER_VALIDATE_EMAIL)){
                     $_SESSION['usuario_session'] = $email;
                     $_SESSION['senha_session'] = $senha;
                     echo '<script language="javascript">';
@@ -163,11 +155,11 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
                     echo "<meta http-equiv='refresh' content='0, url=principalProf.php'>";
                   }
                   else{
-                  echo '<script language = "javascript"> alert("Verificação de e-mail pendente") </script>';
+                  echo '<script language = "javascript"> alert("Atenção, insira um email válido") </script>';
                   }
                 }
                 else{
-                    echo $query1;
+
                     //mysql_query("INSERT INTO `aluno` (`Nome`, `Curso`, `Semestre`, `Email`, `Senha`) VALUES ('$nome', '$curso', '$semestre', '$email', '$senha')");
                     echo '<script language="javascript">';
                     echo 'alert("Email ou senha incorretos")';

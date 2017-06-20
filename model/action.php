@@ -273,6 +273,56 @@ function chamaAvisos(){
 }
 
 
+function chamaResolverExercicios(){
+
+       if(isset($_POST['turmas'])){
+
+                 $turmas=implode(',',$_POST['turmas']);
+
+                 echo "<meta http-equiv='refresh' content='0, url=../view/selecaoNivelAluno.php?turmas=$turmas'/>";
+
+
+       }
+       else{
+
+           echo "<script>alert('Você não selecionou nenhuma turma')</script>";
+           echo "<meta  http-equiv='refresh' content='0, url=../view/minhasTurmasAluno.php'/>";
+
+       }
+
+
+
+}
+
+
+function resolverExercicio(){
+
+     $turmas = $_POST['turmas'];
+     $nivel = $_POST['nivel'];
+
+     if($nivel ==1 ){
+
+           echo "<meta http-equiv='refresh' content='0, url=../view/resolverExerciciosNivel1.php?turmas=$turmas '/>";
+
+     }
+     else if($nivel ==2){
+
+       echo "<script>alert('Modo ainda não implementado')</script>";
+
+     }
+     else if($nivel ==3){
+
+       echo "<script>alert('Modo ainda não implementado')</script>";
+
+     }
+
+
+
+
+
+}
+
+
 
 
 

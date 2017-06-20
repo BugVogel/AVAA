@@ -1,3 +1,26 @@
+.column{
+
+}
+
+
+
+.buttonLesson {
+
+  background-color: #5cb85c;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  text-align: left;
+  border: none;
+  outline: none;
+  transition: 0.4s;
+  border-color: #4cae4c;
+  border-radius: 4px;
+
+
+
+}
 
 
 .scrollAvisosButton{
