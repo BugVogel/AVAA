@@ -135,10 +135,23 @@ function salvarAtividadeFacil(){
     $res = mysql_query("INSERT INTO `bloco_linhas` (`ID_atividade`, `Bloco`, `texto`) VALUES ('$ID', '2', '".$processamento."')");
     $res = mysql_query("INSERT INTO `bloco_linhas` (`ID_atividade`, `Bloco`, `texto`) VALUES ('$ID', '3', '".$saida."')");
 
+
     for($i = 0; $i<sizeof($turmas); $i++)
     {
         $idTurma = $turmas[$i];
         $res = mysql_query("INSERT INTO `atividade_turma` (`ID_atividade`, `ID_turma`) VALUES ('$ID', '$idTurma')");
+
+        $procura = mysql_query("SELECT * FROM `turma_alunos` WHERE `ID_turma` = $idTurma");
+
+        while($alunos = mysql_fetch_array($procura)){
+
+             $aluno = $alunos['ID_aluno'];
+
+             $res = mysql_query("INSERT INTO `atividade_aluno` (`ID_atividade`,`ID_Aluno`,`Status`) VALUES ('$ID', '$aluno', 'NaoTentou')");
+
+        }
+
+
     }
 
     echo "<meta http-equiv='refresh' content='1, url=../view/minhasTurmas.php'>";

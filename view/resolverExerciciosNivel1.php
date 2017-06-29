@@ -10,62 +10,66 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
 <?php
 
     $mensagem = array();
-
-    $turmas = explode(',', $_GET['turmas']);
-
-    for($i =0; $i<sizeof($turmas);$i++){
-    $ID = $turmas[$i];
-    $queryAtividades_turmas = mysql_query("SELECT*FROM `turma_alunos` WHERE `ID_turma` = '$ID' AND `ID_aluno`= '$_SESSION[usuario_session]'");
+    $atividadesParaFazer = array();
 
 
-    if(mysql_num_rows($queryAtividades_turmas)>0){ //Tem atividade
+   $turmas = $_GET['turmas'];
+   $turmas = explode(',', $turmas);
 
-          $atividadesParaFazer = array();
+   for($i=0; $i<sizeof($turmas); $i++){
 
-          while($atividadesBD = mysql_fetch_array($queryAtividades_turmas)){
+    $turma = $turmas[$i]; //Verifica atividades que estao na turma
+     $queryTurmasAtividades = mysql_query("SELECT * FROM `atividade_turma` WHERE `ID_turma` = '$turma' ");
 
-               $atividadesBDdata = explode(',', $atividadesBD['Atividade']);
-
-               if($atividadesBDdata[0] == ""){ //Não possui atividades cadastradas nesta turma
-               break; echo "teste"; }
-
-               for($a=0;$a<sizeof($atividadesBDdata);$a++){
-
-                 if(array_key_exists($atividadesBDdata[$a],$atividadesParaFazer)){ //Exclui a atividade que já tem no array
-                 unset($atividadesBDdata[$a]);
-
-                 }
-                 else{
-                    array_push($atividadesParaFazer, $atividadesBDdata[$a]);
+     if(mysql_num_rows($queryTurmasAtividades)>0){ //Tem Atividades a verificar
 
 
-                 }
+        while($atividades = mysql_fetch_array($queryTurmasAtividades)){
 
-               }
+            $atividade = $atividades['ID_atividade'];
 
-          }
+            $queryAtividadeAluno = mysql_query("SELECT * FROM `atividade_aluno` WHERE `ID_atividade` = '$atividade' AND `Status` = 'NaoTentou' AND `ID_Aluno` = '$_SESSION[usuario_session]' ");
 
-          asort($atividadesParaFazer); //Coloca na ordem dos mais recentes
-          for($b=0;$b<sizeof($atividadesParaFazer);$b++){ //Busca atividades que tem para fazer
-          $ID_atividade = $atividadesParaFazer[$b];
-          $queryAtividade = mysql_query("SELECT * FROM `atividade` WHERE `ID` ='$ID_atividade'");
+          if(mysql_num_rows($queryAtividadeAluno)>0){ //Tem atividades nao feitas
+            while($atividadeNaoFeita = mysql_fetch_array($queryAtividadeAluno)){
 
-          $atividadeBusca= mysql_fetch_array($queryAtividade);
+              array_push($atividadesParaFazer, $atividadeNaoFeita['ID_Atividade']);
+            }
 
-          array_push($mensagem, "
-
-                      <button type='submit' class='buttonLesson' name ='botaoExercicio' value=".$atividadeBusca['ID'].",".$atividadeBusca['Descricao']. ">" .$atividadeBusca['Descricao']. "</button><br/>
-                      <br>
-          ");
-
-          }
-
-    }
+           }
 
 
-    }
+        }
 
 
+
+
+   }
+
+
+
+
+}
+
+
+$atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplicações
+
+
+
+  asort($atividadesParaFazer); //Coloca na ordem dos mais recentes
+  for($b=0;$b<sizeof($atividadesParaFazer);$b++){ //Busca atividades que tem para fazer
+  $ID_atividade = $atividadesParaFazer[$b];
+  $queryAtividade = mysql_query("SELECT * FROM `atividade` WHERE `ID` ='$ID_atividade'");
+
+  $atividadeBusca= mysql_fetch_array($queryAtividade);
+
+  array_push($mensagem, "
+
+              <button type='submit' class='buttonLesson' name ='botaoExercicio' value=".$atividadeBusca['ID'].",".$atividadeBusca['Descricao']. ">" .$atividadeBusca['Descricao']. "</button><br/>
+              <br>
+  ");
+
+  }
 
 
 
@@ -377,10 +381,12 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
                                $bloco = $busca['texto'];
 
                                array_push($blocos, "
-                                <div value='".$atividade.",".$busca['Bloco']."'draggable='true'  style='text-shadow:none;border-radius:4px' class='panel-primary column'>
+                               <div name='bloco' 'class='col-md-4 col-xs-4'>
+                                <div draggable='true'  style='text-shadow:none;border-radius:4px' class='panel-primary column'>
                                   <div style='border-radius:4px'class='panel-heading'>".$titulo."</div>
                                   <div style='background-color:black;border-radius:4px'class='panel-body'>".$bloco."</div>
                                 </div>
+                               </div>
                                    ");
 
 
@@ -404,12 +410,14 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
 
                                }
 
+                                $primeiro;
+                                $segundo;
+                                $terceiro;
                                for($i=0; $i<3; $i++){ //Imprime blocos na ordem gerada
                                  $a = $i+1;
-                                 echo "<div name='bloco' value='".$a."'class='col-md-4 col-xs-4'>";
+
                                  echo $blocos[$ordemBlocos[$i]];
-                                 echo "<input id='position' type='hidden' name='position'value='1'/>";
-                                 echo "</div>";
+
 
 
                                }
@@ -420,7 +428,7 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
 
 
                                               var bloco1 = blocos[0];
-                                              
+
                                               var value1 = bloco1.value;
                                               var array1 = value1.split(',');
                                               array1.push('".$ordemBlocos[0]."');
