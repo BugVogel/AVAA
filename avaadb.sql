@@ -3,7 +3,11 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
+<<<<<<< HEAD
 -- Generation Time: 29-Jun-2017 às 03:30
+=======
+-- Generation Time: 20-Jun-2017 às 15:47
+>>>>>>> origin/master
 -- Versão do servidor: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -67,6 +71,7 @@ INSERT INTO `atividade` (`ID`, `Descricao`, `Nivel`, `N_Blocos`) VALUES
 (15, 'Testando', 1, 3),
 (16, 'O algoritmo abaixo serÃ¡ para testar o funcionamento do banco de dados em relaÃ§Ã£o a esta funcional', 1, 3),
 (17, 'testttttttttteeeeeeeeeeee', 1, 3);
+<<<<<<< HEAD
 
 -- --------------------------------------------------------
 
@@ -91,6 +96,8 @@ INSERT INTO `atividade_aluno` (`ID_Atividade`, `ID_Aluno`, `Status`) VALUES
 (15, 'gsm_fsa2008@hotmail.com', 'NaoTentou'),
 (17, 'teste@gmail.com', 'NaoTentou'),
 (16, 'teste@gmail.com', 'NaoTentou');
+=======
+>>>>>>> origin/master
 
 -- --------------------------------------------------------
 
@@ -138,8 +145,12 @@ INSERT INTO `aviso` (`ID`, `Titulo`, `Texto`, `Data`, `ID_Turma`, `Nome_Professo
 (5, 'Teste', ' Teste1', '23/05/2017', 10, 'Professor'),
 (6, 'Uefs paralisada', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eleifend tortor nec dui posuere, eu ', '01/06/2017', 7, 'Professor'),
 (9, 'aa', ' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eleifend tortor nec dui posuere, eu vulputate sapien blandit. Suspendisse imperdiet, elit nec mollis vestibulum, odio elit efficitur mi, sed fringilla magna metus sed turpis. Mauris a diam convallis erat consectetur porttitor varius id velit. Duis laoreet tincidunt lorem, ut auctor urna pellentesque in. Proin sed odio et dolor scelerisque elementum. ', '04/06/2017', 10, 'Professor'),
+<<<<<<< HEAD
 (10, 'Lorem Ipsum', ' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eleifend tortor nec dui posuere, eu vulputate sapien blandit. Suspendisse imperdiet, elit nec mollis vestibulum, odio elit efficitur mi, sed fringilla magna metus sed turpis. Mauris a diam convallis erat consectetur porttitor varius id velit. Duis laoreet tincidunt lorem, ut auctor urna pellentesque in. Proin sed odio et dolor scelerisque elementum.', '04/06/2017', 8, 'Professor'),
 (11, 'Uefs de Volta', ' A uefs esta de volta ao funcionamento', '20/06/2017', 8, 'Professor');
+=======
+(10, 'Lorem Ipsum', ' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eleifend tortor nec dui posuere, eu vulputate sapien blandit. Suspendisse imperdiet, elit nec mollis vestibulum, odio elit efficitur mi, sed fringilla magna metus sed turpis. Mauris a diam convallis erat consectetur porttitor varius id velit. Duis laoreet tincidunt lorem, ut auctor urna pellentesque in. Proin sed odio et dolor scelerisque elementum.', '04/06/2017', 8, 'Professor');
+>>>>>>> origin/master
 
 -- --------------------------------------------------------
 
@@ -223,13 +234,21 @@ INSERT INTO `turma` (`ID`, `Disciplina`, `Professor`, `Escola`) VALUES
 
 CREATE TABLE `turma_alunos` (
   `ID_turma` int(20) NOT NULL,
+<<<<<<< HEAD
   `ID_aluno` varchar(50) CHARACTER SET utf8 NOT NULL
+=======
+  `ID_aluno` varchar(50) CHARACTER SET utf8 NOT NULL,
+  `Atividade` varchar(50) CHARACTER SET utf8 NOT NULL,
+  `Resolvido` varchar(50) CHARACTER SET utf8 NOT NULL,
+  `Erradas` varchar(50) CHARACTER SET utf8 NOT NULL
+>>>>>>> origin/master
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `turma_alunos`
 --
 
+<<<<<<< HEAD
 INSERT INTO `turma_alunos` (`ID_turma`, `ID_aluno`) VALUES
 (7, '3011rafael@gmail.com'),
 (7, 'gsm_fsa2008@hotmail.com'),
@@ -238,6 +257,16 @@ INSERT INTO `turma_alunos` (`ID_turma`, `ID_aluno`) VALUES
 (10, 'teste@gmail.com'),
 (11, '3011rafael@gmail.com'),
 (11, 'gsm_fsa2008@hotmail.com');
+=======
+INSERT INTO `turma_alunos` (`ID_turma`, `ID_aluno`, `Atividade`, `Resolvido`, `Erradas`) VALUES
+(7, '3011rafael@gmail.com', '17', '', ''),
+(7, 'gsm_fsa2008@hotmail.com', '17', '', ''),
+(8, '3011rafael@gmail.com', '15', '', ''),
+(8, 'gsm_fsa2008@hotmail.com', '15', '', ''),
+(10, 'teste@gmail.com', '16,17', '', ''),
+(11, '3011rafael@gmail.com', '', '', ''),
+(11, 'gsm_fsa2008@hotmail.com', '', '', '');
+>>>>>>> origin/master
 
 --
 -- Indexes for dumped tables
@@ -293,7 +322,11 @@ ALTER TABLE `atividade`
 -- AUTO_INCREMENT for table `aviso`
 --
 ALTER TABLE `aviso`
+<<<<<<< HEAD
   MODIFY `ID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+=======
+  MODIFY `ID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+>>>>>>> origin/master
 --
 -- AUTO_INCREMENT for table `turma`
 --
