@@ -14,6 +14,7 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
 
 
 
+
 //verifica se a função existe
 //http://br2.php.net/manual/pt_BR/function.function-exists.php
 
@@ -329,6 +330,44 @@ function resolverExercicio(){
 
      }
 
+
+
+
+
+}
+
+function gerarResultadoNivel1(){
+
+
+     $atividade = $_POST['atividade'];
+
+     if($_POST['resultado'] == 'acertou'){ //Acertou a ordem
+
+       $usuario = $_SESSION['usuario_session'];
+       $queryAtividade = mysql_query("UPDATE `atividade_aluno` SET `Status` ='Acertou' WHERE `ID_Aluno` = '$usuario' AND `ID_Atividade`= '$atividade' ");
+
+
+       $turmas = $_POST['turmas'];
+
+       echo "<meta http-equiv='refresh' content='0, url=../view/resolverExerciciosNivel1.php?turmas=$turmas' />";
+
+
+
+     }
+     else
+     if($_POST['resultado'] == 'errou'){ //Errou a ordem
+
+       $usuario = $_SESSION['usuario_session'];
+       $queryAtividade = mysql_query("UPDATE `atividade_aluno` SET `Status` ='Errou' WHERE `ID_Aluno` = '$usuario' AND `ID_Atividade`= '$atividade' ");
+
+
+       $turmas = $_POST['turmas'];
+
+       echo "<meta http-equiv='refresh' content='0, url=../view/resolverExerciciosNivel1.php?turmas=$turmas' />";
+
+
+
+     }
 
 
 

@@ -333,11 +333,11 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplica√ß√
                             <div class="col-md-12 col-xs-12 col-md-offset-4 col-xs-offset-3">
 
                             </form>
-                           <form name="paginacao" method="POST" action="" >
+                           <form id="paginacao" name="paginacao" method="POST" action="" >
 
                               <div  class="btn-toolbar">
                                 <div class="btn-group" >
-                                  <button type="submit" name="b" value ='1' class="btn btn-warning">1</button>
+                                  <button id="b1" type="submit" name="b" value ='1' class="btn btn-warning">1</button>
                                   <button type="submit" name="b" value ='2' class="btn btn-warning">2</button>
                                   <button type="submit" name="b" value ='3' class="btn btn-warning">3</button>
                                   <button type="submit" name="b" value ='4' class="btn btn-warning">4</button>
@@ -376,17 +376,18 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplica√ß√
                                $queryBlocos = mysql_query("SELECT * FROM `bloco_linhas` WHERE `ID_atividade` = '$atividade'");
                                $blocos = array();
 
-
+                              ;
                                while($busca = mysql_fetch_array($queryBlocos)){ //Coloca em array os blocos, Sempre ser√£o 3
                                $bloco = $busca['texto'];
 
                                array_push($blocos, "
-                               <div name='bloco' 'class='col-md-4 col-xs-4'>
-                                <div draggable='true'  style='text-shadow:none;border-radius:4px' class='panel-primary column'>
+
+                                <div  draggable='true'  style='text-shadow:none;border-radius:4px' class='panel-primary column'>
                                   <div style='border-radius:4px'class='panel-heading'>".$titulo."</div>
-                                  <div style='background-color:black;border-radius:4px'class='panel-body'>".$bloco."</div>
+                                  <div id='bloco".$busca['Bloco']."'  style='background-color:black;border-radius:4px'class='panel-body'>".$bloco."</div>
+                                  <input type='hidden'name='idAtividade' value='".$atividade."'/>
                                 </div>
-                               </div>
+
                                    ");
 
 
@@ -416,72 +417,20 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplica√ß√
                                for($i=0; $i<3; $i++){ //Imprime blocos na ordem gerada
                                  $a = $i+1;
 
+                                 echo "<div id='coluna".$a."'name='bloco' class='col-md-4 col-xs-4'>";
                                  echo $blocos[$ordemBlocos[$i]];
+                                 echo "</div>";
+                                 echo "<input id='posicao'type='hidden' value='".$a."' name='posicao' >";
 
 
 
                                }
 
-                               echo "<script>
-                                         var blocos = document.getElementsByClassName('panel-primary');
-
-
-
-                                              var bloco1 = blocos[0];
-
-                                              var value1 = bloco1.value;
-                                              var array1 = value1.split(',');
-                                              array1.push('".$ordemBlocos[0]."');
-                                              value1 = array1.join();
-                                              bloco1.value = value1;
-
-                                              var bloco2 = blocos[1];
-                                              var value2 = bloco2.value;
-                                              var array2 = value2.split(',');
-                                              array2.push('".$ordemBlocos[1]."');
-                                              value2 = array2.join();
-                                              bloco2.value = value2;
-
-                                              var bloco3 = blocos[2];
-                                              var value3 = bloco3.value;
-                                              var array3 = value3.split(',');
-                                              array3.push('".$ordemBlocos[2]."');
-                                              value3 = array3.join();
-                                              bloco3.value = value3;
-
-
-
-                               </script>";
-
 
                            }
 
 
-                           if(@$_POST['escolha'] == 'cancelar'){
 
-
-
-                              $_POST['b'] = '1';
-
-
-
-
-                           }
-
-
-                           if(@$_POST['escolha'] == 'restaurar'){
-
-
-
-
-                           }
-
-                           if(@$_POST['escolha'] == 'enviar'){
-
-
-
-
-                           }
 
 
 
@@ -493,17 +442,23 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplica√ß√
 
                         </form>
 
-                            <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-                          <form name="atividades" id="atividades"  method="post" action="">
+                            <br><br><br><br><br><br><br><br><br><br><br><br>
 
-                          <button class="btn btn-info" name="escolha" value="enviar">Enviar Resposta</button>
-                          <button class="btn btn-danger" name="escolha" value="cancelar">Cancelar</button>
+
+                          <button class="btn btn-info"  onclick="javascript:verificarRespostaNivel1();">Enviar Resposta</button>
+                          <button class="btn btn-danger" onclick="javascript:cancelarAtividade();">Cancelar</button>
                           <br><br>
-                          <button style="position:relative;left:155px;top:-54px;"class="btn btn-default" name="escolha" value="restaurar">Restaurar</button>
 
+                          <form style="visibility:hidden"method="POST" action="../model/action.php">
+                            <?php
+                                   $turmasString = implode(',' , $turmas);
+                                   echo "<input type='hidden' name='turmas' value=$turmasString/>";
 
-
-
+                             ?>
+                            <input id="atividade"type="hidden" name="atividade" value="">
+                            <input name="action" value="gerarResultadoNivel1" />
+                            <input id="acertou" name="resultado" type="submit" value="acertou" />
+                            <input id="errou" name="resultado" type="submit" value="errou" />
                           </form>
 
                    </div>

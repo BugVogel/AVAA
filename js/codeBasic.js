@@ -126,10 +126,20 @@ function handleDrop(e){
 
  if(dragSrcEl != this){
 
+  var valueOrigem = dragSrcEl.value;
+  var valueDestino = this.value;
+  var idOrigem = dragSrcEl.id;
+  var idDestino = this.id;
 
   dragSrcEl.innerHTML = this.innerHTML;
   dragSrcEl.style.opacity = 1;
+  dragSrcEl.value = valueDestino;
+  this.value = valueOrigem;
+  dragSrcEl.id =  idDestino;
+  this.id = idOrigem;
   this.innerHTML = e.dataTransfer.getData('text/html');
+
+
 
 
  }
@@ -160,3 +170,77 @@ function handleDragEnd(e){
       col.addEventListener('dragend',handleDragEnd,false);
 
 });
+
+
+//Pegar resposta da atividade de Nível 1
+
+
+function verificarRespostaNivel1(){
+ var pontos =0;
+ var atividade;
+
+ for(var i =0; i<3; i++){ //Verifica as 3 colunas de código
+  var a = i+1;
+  var bloco = document.getElementById('coluna' + a);
+
+  var children = bloco.children; //Desce uma tag
+  children = children[0].children; //Desce mais uma tag
+
+  var tagDiv = children[1]; //Pega a segunda div
+  atividade = tagDiv.nextElementSibling;
+  atividade = atividade.value;
+  var id = tagDiv.id;
+  id = id.split('bloco');
+  var posicaoCorreta = id[1];    //Pega posicao do bloco
+
+  var posicaoAtual = bloco.nextElementSibling;
+  posicaoAtual = posicaoAtual.value;
+
+  if(posicaoAtual == posicaoCorreta ){ //Acertou, conta um ponto
+
+   pontos++;
+
+  }
+
+
+
+
+}
+
+    if(pontos == 3){ //Acertou os três blocos
+       var identificadorAtividade = document.getElementById('atividade');
+       var acertouButton = document.getElementById('acertou');
+       identificadorAtividade.value = atividade;
+       alert("Parabéns! Resposta correta!");
+
+       acertouButton.click(); //Da Post
+
+
+
+
+    }
+    else{ //Errou a ordem
+
+      var identificadorAtividade = document.getElementById('atividade');
+      var errouButton = document.getElementById('errou');
+      identificadorAtividade.value = atividade;
+      alert("A resposta esta incorreta");
+
+      errouButton.click(); //Da Post
+
+    }
+
+
+
+}
+
+
+function cancelarAtividade(){
+
+
+   var pagina1 = document.getElementById('b1');
+
+   pagina1.click();
+
+
+}
