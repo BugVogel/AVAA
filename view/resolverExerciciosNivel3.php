@@ -13,8 +13,8 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
     $atividadesParaFazer = array();
 
 
-   $turmas = $_GET['turmas'];
-   $turmas = explode(',', $turmas);
+   $turmasString = $_GET['turmas'];
+   $turmas = explode(',', $turmasString);
 
    for($i=0; $i<sizeof($turmas); $i++){
 
@@ -29,7 +29,7 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
             $atividade = $atividades['ID_atividade'];
             $query1 = mysql_query("SELECT * FROM `atividade` WHERE `ID` = '$atividade'");
             $verificaNivel = mysql_fetch_array($query1);
-            if($verificaNivel['Nivel'] == 1){ //Coloca somente atividades do nivel 1
+            if($verificaNivel['Nivel'] == 3){ //Coloca somente atividades do nivel 1
 
             $queryAtividadeAluno = mysql_query("SELECT * FROM `atividade_aluno` WHERE `ID_atividade` = '$atividade' AND `Status` = 'NaoTentou' AND `ID_Aluno` = '$_SESSION[usuario_session]' ");
 
@@ -130,7 +130,8 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplicaç�
                                       <ul class="nav masthead-nav">
                                           <li><a href="principalAluno.php">Início</a></li>
                                           <li><a href="minhasTurmasAluno.php">Minhas turmas</a></li>
-                                          <li class="active"><a href="resolverExerciciosNivel1.php">Exercícios Nível 1</a></li>
+                                          <li class="active"><a href="">Exercícios nível 3</a></li>
+                                          <?php echo "<li><a href='correcoesNivel3Aluno.php?turmas=$turmasString'> Correções do nível 3</a></li>" ?>
                                           <li><a href="?go=sair">Logoff</a></li>
                                       </ul>
                                   </nav>
@@ -143,7 +144,7 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplicaç�
 
 
                           <div  class="inner cover"  >
-                            <h2 style="text-align:center">Resolver Exercícios Nível 1</h2>
+                            <h2 style="text-align:center">Resolver Exercícios Nível 3</h2>
                             <br>
 
                             <div class="col-md-4 col-xs-12" >
@@ -359,74 +360,52 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplicaç�
 
                           <div class="col-md-8 col-xs-12" style="height:400px;border-left:solid 1px LightBlue">
                         <h3 class="cover-heading" style="font-size:20px">Atividade</h3>
-                        <h6>Ajuste os blocos abaixo para que a  ordem de execução do algoritmo esteja correta</h6>
+                        <h6>O código abaixo enviado pelo seu professor, contém erros, corrija-os e reenvie ao seu professor</h6>
 
-                        <form name="blocos" method="post" action="">
+                        <form name="blocos" method="post" action="../model/action.php">
 
                      <div id="columns">
 
                        <?php
-                   $ordemBlocos = array();
+
                            if(@$_POST['botaoExercicio'] ){
 
-                               if(!empty($ordemBlocos)){
-                                 $ordemBlocos = array();
-                               }
 
                                $value =explode( ',',$_POST['botaoExercicio']); //Pega informações da atividade
                                $atividade = $value[0];
                                $titulo = $value[1];
 
                                $queryBlocos = mysql_query("SELECT * FROM `bloco_linhas` WHERE `ID_atividade` = '$atividade'");
-                               $blocos = array();
+                               $blocos ="";
 
-                              ;
-                               while($busca = mysql_fetch_array($queryBlocos)){ //Coloca em array os blocos, Sempre serão 3
+
+                               $busca = mysql_fetch_array($queryBlocos); //Recolhe informação do banco
                                $bloco = $busca['texto'];
 
-                               array_push($blocos, "
+                               $linhas = explode("\n", $bloco);
+                               $linhas = sizeof($linhas); //Numero de linhas
 
-                                <div  draggable='true'  style='text-shadow:none;border-radius:4px' class='panel-primary column'>
+
+
+                               $blocos = "
+
+                                <div  style='text-shadow:none;border-radius:4px' class='panel-primary '>
                                   <div style='border-radius:4px'class='panel-heading'>".$titulo."</div>
-                                  <div id='bloco".$busca['Bloco']."'  style='background-color:black;border-radius:4px'class='panel-body'>".$bloco."</div>
-                                  <input type='hidden'name='idAtividade' value='".$atividade."'/>
+                                  <textarea name='texto'rows='$linhas'cols='29' id='bloco".$busca['Bloco']."'  style='background-color:black;border-radius:4px'class='panel-body'>".$bloco."</textarea>
+                                  <input type='hidden'id='idAtividade'name='idAtividade' value='".$atividade."'/>
                                 </div>
 
-                                   ");
-
-
-                               }
-
-                               for($i=0; $i<3; $i++){ //Monta ordem aleatória dos blocos
-                                   $num;
-                                  do{ //Procura numero aleatorio
-                                    $num = rand(0,2);
-
-                                    if(!in_array($num, $ordemBlocos,false)){
-
-                                         array_push($ordemBlocos, $num);  //Adiciona na ordem
-
-                                    }
-
-                                   }
-                                  while(sizeof($ordemBlocos)<3);
+                                   ";
 
 
 
-                               }
 
 
-                               for($i=0; $i<3; $i++){ //Imprime blocos na ordem gerada
-                                 $a = $i+1;
 
-                                 echo "<div id='coluna".$a."'name='bloco' class='col-md-4 col-xs-4'>";
-                                 echo $blocos[$ordemBlocos[$i]];
+                                 echo "<div id='coluna'name='bloco' class='col-md-4 col-xs-12 col-md-offset-4'>";
+                                 echo $blocos;
                                  echo "</div>";
-                                 echo "<input id='posicao'type='hidden' value='".$a."' name='posicao' >";
 
-
-
-                               }
 
 
                            }
@@ -442,25 +421,29 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplicaç�
 
                       </div>
 
+
+                      <?php
+
+                             echo "<input type='hidden' name='turmas' value=$turmasString/>";
+
+                       ?>
+                      <input id="atividade"type="hidden" name="atividade" >
+                      <input type="hidden"name="action" value="gerarResultadoNivel3" />
+                      <button style="visibility:hidden" type="submit" id="enviar"> </button>
+
                         </form>
 
                             <br><br><br><br><br><br><br><br><br><br><br><br>
 
+                            <button class="btn btn-info"  onclick="javascript:enviarAtividadeNivel3();">Enviar Resposta</button>
+                            <button class="btn btn-danger" onclick="javascript:cancelarAtividade();">Cancelar</button>
+                            <br><br>
 
-                          <button class="btn btn-info"  onclick="javascript:verificarResposta();">Enviar Resposta</button>
-                          <button class="btn btn-danger" onclick="javascript:cancelarAtividade();">Cancelar</button>
-                          <br><br>
+                          <form style="visibility:hidden"method="POST" action="">
 
-                          <form style="visibility:hidden"method="POST" action="../model/action.php">
-                            <?php
-                                   $turmasString = implode(',' , $turmas);
-                                   echo "<input type='hidden' name='turmas' value=$turmasString/>";
 
-                             ?>
-                            <input id="atividade"type="hidden" name="atividade" value="">
-                            <input name="action" value="gerarResultado" />
-                            <input id="acertou" name="resultado" type="submit" value="acertou,1" />
-                            <input id="errou" name="resultado" type="submit" value="errou,1" />
+
+
                           </form>
 
                    </div>

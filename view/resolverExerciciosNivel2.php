@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php
 require_once 'conexao.php';
 session_start();
@@ -29,7 +28,7 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
             $atividade = $atividades['ID_atividade'];
             $query1 = mysql_query("SELECT * FROM `atividade` WHERE `ID` = '$atividade'");
             $verificaNivel = mysql_fetch_array($query1);
-            if($verificaNivel['Nivel'] == 1){ //Coloca somente atividades do nivel 1
+            if($verificaNivel['Nivel'] == 2){ //Coloca somente atividades do nivel 1
 
             $queryAtividadeAluno = mysql_query("SELECT * FROM `atividade_aluno` WHERE `ID_atividade` = '$atividade' AND `Status` = 'NaoTentou' AND `ID_Aluno` = '$_SESSION[usuario_session]' ");
 
@@ -130,7 +129,7 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplicaç�
                                       <ul class="nav masthead-nav">
                                           <li><a href="principalAluno.php">Início</a></li>
                                           <li><a href="minhasTurmasAluno.php">Minhas turmas</a></li>
-                                          <li class="active"><a href="resolverExerciciosNivel1.php">Exercícios Nível 1</a></li>
+                                          <li class="active"><a href="resolverExerciciosNivel2.php">Exercícios Nível 2</a></li>
                                           <li><a href="?go=sair">Logoff</a></li>
                                       </ul>
                                   </nav>
@@ -143,7 +142,7 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplicaç�
 
 
                           <div  class="inner cover"  >
-                            <h2 style="text-align:center">Resolver Exercícios Nível 1</h2>
+                            <h2 style="text-align:center">Resolver Exercícios Nível 2</h2>
                             <br>
 
                             <div class="col-md-4 col-xs-12" >
@@ -397,10 +396,10 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplicaç�
 
                                }
 
-                               for($i=0; $i<3; $i++){ //Monta ordem aleatória dos blocos
+                               for($i=0; $i<sizeof($blocos); $i++){ //Monta ordem aleatória dos blocos
                                    $num;
                                   do{ //Procura numero aleatorio
-                                    $num = rand(0,2);
+                                    $num = rand(0,sizeof($blocos)-1);
 
                                     if(!in_array($num, $ordemBlocos,false)){
 
@@ -409,14 +408,14 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplicaç�
                                     }
 
                                    }
-                                  while(sizeof($ordemBlocos)<3);
+                                  while(sizeof($ordemBlocos)<sizeof($blocos));
 
 
 
                                }
 
 
-                               for($i=0; $i<3; $i++){ //Imprime blocos na ordem gerada
+                               for($i=0; $i<sizeof($ordemBlocos); $i++){ //Imprime blocos na ordem gerada
                                  $a = $i+1;
 
                                  echo "<div id='coluna".$a."'name='bloco' class='col-md-4 col-xs-4'>";
@@ -444,7 +443,7 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplicaç�
 
                         </form>
 
-                            <br><br><br><br><br><br><br><br><br><br><br><br>
+                            <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 
                           <button class="btn btn-info"  onclick="javascript:verificarResposta();">Enviar Resposta</button>
@@ -459,8 +458,8 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplicaç�
                              ?>
                             <input id="atividade"type="hidden" name="atividade" value="">
                             <input name="action" value="gerarResultado" />
-                            <input id="acertou" name="resultado" type="submit" value="acertou,1" />
-                            <input id="errou" name="resultado" type="submit" value="errou,1" />
+                            <input id="acertou" name="resultado" type="submit" value="acertou,2" />
+                            <input id="errou" name="resultado" type="submit" value="errou,2" />
                           </form>
 
                    </div>

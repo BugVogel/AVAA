@@ -31,6 +31,8 @@ else{
         <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
         <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
         <script src="../js/ie-emulation-modes-warning.js"></script>
+        <script src="../js/funcoes.js" type="text/javascript"></script>
+
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -53,25 +55,35 @@ else{
 
                             <nav>
                                 <ul class="nav masthead-nav">
-                                    <li class="active"><a href="#">Início</a></li>
+                                    <li><a href="principalProf.php">Início</a></li>
                                     <li><a href="minhasTurmas.php">Minhas turmas</a></li>
-                                    <li><a href="ModuloCorretor.php">Módulo corretor</a></li>
+                                    <li class="active"> <a href="">Cadastrar atividade</a></li>
                                     <li><a href="?go=sair">Logoff</a></li>
                                 </ul>
                             </nav>
                         </div>
                     </div>
 
-                    <div class="inner cover">
-                        <h2 class="cover-heading" style="padding: 2px;">Ambiente Virtual de Aprendizagem de Algoritmos</h2>
-                        <!-- <p class="lead"> <h4>Este é um ambiente para auxiliar no processo de aprendizagem de algoritmos, possibilitando a resolução de problemas com feedbacks instântaneos, além de permitir a comunicação com o professor da disciplina. </h4></p>
-                        <p class="lead">
-                          <a href="#" class="btn btn-lg btn-default">Saiba mais</a>
-                        </p> -->
-                    </div>
 
-                    <form class="form-signin" method="POST" action="?go=logar">
+               <br><br><br>
+                    <form class="" method="post" action="../model/action.php" name="formulario" id="formulario">
+                        <input type="hidden" id="action" name="action" />
 
+                            <?php
+                                $turmas = $_GET['turmas']; // String com IDS das turmas que deve ser convertida em array
+                                echo "<input type=\"hidden\" id=\"turmas\" name=\"turmas\" value=\"$turmas\" />";
+                            ?>
+
+                            <label for="edit-output-data" style="font-size: 150%;">Descrição do algoritmo: </label><br>
+                            <textarea style="color:black;border-radius:10px" rows="3" cols="58" id="descricao" name="descricao"></textarea>
+                            <br>
+                            <label for="edit-output-data" style="font-size: 150%;">Código-fonte: </label><br>
+
+                            <textarea style="color:black;border-radius:10px" rows="15" cols="58" id="codigo" name="codigo" placeholder="Informe o trecho de código a ser modificado pelo aluno"></textarea>
+                            <br>
+
+                            <button type="submit" class="btn btn-success" onclick="javascript:doPost('formulario', 'salvarAtividadeDificil');">Salvar</button> <br>
+                            <!--<input type="button" value="Avançar" class="btn btn-success" onclick="javascript:doPost('formulario', 'salvarAtividadeFacil');">	;-->
 
                     </form>
 

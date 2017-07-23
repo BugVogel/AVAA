@@ -153,7 +153,7 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
                                 <ul class="nav masthead-nav">
                                     <li><a href="principalProf.php">Início</a></li>
                                     <li><a href="minhasTurmas.php">Minhas turmas</a></li>
-                                    <li class="active"><a href="cadastrarAviso.php">Cadastrar Aviso</a></li>
+                                    <li class="active"><a href="">Cadastrar Aviso</a></li>
                                     <li><a href="?go=sair">Logoff</a></li>
                                 </ul>
                             </nav>

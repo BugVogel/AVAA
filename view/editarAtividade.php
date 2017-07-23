@@ -4,7 +4,7 @@ session_start();
 if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) {
     echo "<meta http-equiv='refresh' content='0, url=index.php'>";
 } else {
-    
+
     ?>
     <html lang="pt">
         <head>
@@ -30,8 +30,7 @@ if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) 
 
             <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
             <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-            <script src="../js/ie-emulation-modes-warning.js"></script>
-            <script src="../js/funcoes.js" type="text/javascript"></script>
+
 
 
             <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -67,28 +66,33 @@ if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) 
 
 
                         <form class="" method="post" action="../model/action.php" name="formulario" id="formulario">
+                          <input type="hidden" name="action" id="action"/>
     <!--                        <input type="hidden" id="action" name="action" />
                                 <br><br><br>
-                                <label for="edit-output-data" style="font-size: 150%;">Descrição do algoritmo: </label><br> 
+                                <label for="edit-output-data" style="font-size: 150%;">Descrição do algoritmo: </label><br>
                                 <textarea style="color:black;" rows="3" cols="60" id="descricao" name="descricao"></textarea>
                                 <br>
-                                <label for="edit-output-data" style="font-size: 150%;">Código-fonte: </label><br> 
+                                <label for="edit-output-data" style="font-size: 150%;">Código-fonte: </label><br>
                                 <textarea style="color:black;" rows="7" cols="60" id="codigo" name="codigo"></textarea>
 
-                                <label for="edit-output-data" style="font-size: 150%;">Em qual nível deseja cadastrar? </label><br> 
+                                <label for="edit-output-data" style="font-size: 150%;">Em qual nível deseja cadastrar? </label><br>
                                 <div class="">
                                     <input  TYPE="RADIO" name="nivel" id="n1" value="1"><label for="n1"> FÁCIL</label> &emsp;
                                     <input  TYPE="RADIO" name="nivel" id="n2" value="2"><label for="n2"> INTERMEDIÁRIO</label>  &emsp;
-                                    <input  TYPE="RADIO" name="nivel" id="n3" value="3"><label for="n3"> DIFÍCIL</label>   
+                                    <input  TYPE="RADIO" name="nivel" id="n3" value="3"><label for="n3"> DIFÍCIL</label>
                                 </div>
 
                                 <br>
 
 
-                                <input type="button" value="Avançar" class="btn btn-success" onclick="javascript:doPost('formulario', 'salvarAtividade');">	
+                                <input type="button" value="Avançar" class="btn btn-success" onclick="javascript:doPost('formulario', 'salvarAtividade');">
                             -->
 
                             <?php
+                            $turmas = $_GET['turmas'];
+
+                            echo "<input type='hidden' name='turmas' value=$turmas  />";
+
                             if (isset($_SESSION['codigo'])){
                                 if ($_SESSION['codigo'] != NULL) {
                                     //echo $_SESSION['codigo'];
@@ -104,24 +108,25 @@ if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) 
                                         echo "<font size=\"6\" style=\"text-decoration: underline;\"> Nível difícil</font> <br>";
                                         echo "<font size=\"3\"> O algoritmos cadastrado será dividido em linhas.</font> <br><br>";
                                     }
-                                    
+
                                     $texto = explode("\n", $_SESSION['codigo']);
                                     $id = 1;
+                                    
                                     echo "<table align='center' border=2 cellspacing=3 cellpadding=2 style=\"font-size: 110%;\">";
                                     foreach($texto as $nome){
-                                        
+
                                         echo "<tr><td>&emsp;$id&emsp;</td><td>&emsp;$nome&emsp;</td>"
-                                            . "<td>&emsp;<input name=\"linhas[]\" type=\"checkbox\" id=\"linhas[]\" value=" . $id . "> &emsp;</td></tr>";
+                                            . "<td>&emsp;<input name=\"linhas[]\" type=\"checkbox\" id=\"linha".$id."\" value=" . $id . "> &emsp;</td></tr>";
                                         $id++;
                                     }
                                     echo "</table>";
                                 }
-                            }   
-                        
+                            }
+
                             ?>
                             <br>
                             <br>
-                            <input type="button" value="Salvar" class="btn btn-success" onclick="javascript:doPost('formulario', 'salvarAtividade');">	
+                            <input type="button" value="Salvar" class="btn btn-success" onclick="javascript:doPost('formulario', 'salvarAtividadeNivel2');">
 
 
                     </form>
@@ -147,6 +152,12 @@ if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) 
         <script src="../../dist/js/bootstrap.min.js"></script>
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
         <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+        <script src="../js/ie-emulation-modes-warning.js"></script>
+        <script src="../js/funcoes.js" type="text/javascript"></script>
+        <script src="../js/codeBasic.js" type="text/javascript"></script>
+
+
+
     </body>
 </html>
 

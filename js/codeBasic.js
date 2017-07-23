@@ -175,13 +175,14 @@ function handleDragEnd(e){
 //Pegar resposta da atividade de Nível 1
 
 
-function verificarRespostaNivel1(){
+function verificarResposta(){
  var pontos =0;
  var atividade;
 
  for(var i =0; i<3; i++){ //Verifica as 3 colunas de código
   var a = i+1;
   var bloco = document.getElementById('coluna' + a);
+  if(bloco != null){
 
   var children = bloco.children; //Desce uma tag
   children = children[0].children; //Desce mais uma tag
@@ -202,6 +203,12 @@ function verificarRespostaNivel1(){
 
   }
 
+
+   }
+   else{
+     alert("Atividade não selecionada!")
+     return;
+   }
 
 
 
@@ -242,5 +249,46 @@ function cancelarAtividade(){
 
    pagina1.click();
 
-
 }
+
+
+function verificaLinhaNivel2(){
+
+  var linha = document.getElementById('linha1');
+
+  for(var i=1; linha = document.getElementById('linha'+i); i++){
+
+
+      if( !(linha.content.indexOf("(") || linha.content.indexOf("{")) ){
+        alert("Seleção Incorreta");
+        linhas[i].checked = false;
+      }
+
+
+  }
+
+ }
+
+  function enviarAtividadeNivel3(){
+
+    var idAtividade = document.getElementById('idAtividade');
+    if( idAtividade != null){ //Existe
+    idAtividade = idAtividade.value;
+
+    var inputParaId = document.getElementById('atividade');
+    inputParaId.value = idAtividade;
+    var botaoParaEnviar = document.getElementById('enviar');
+    botaoParaEnviar.click();
+
+   }
+   else{
+
+     alert("Não selecionou nenhuma atividade");
+     return;
+   }
+
+
+
+
+
+  }

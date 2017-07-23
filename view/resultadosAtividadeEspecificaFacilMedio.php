@@ -9,41 +9,67 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
 ?>
 <?php
 
-    $mensagem = array();
-    $atividadesParaFazer = array();
+   $mensagem = array();
+   $atividade = $_GET['atividade'];
+   $turmasString = $_GET['turmas'];
+
+   $queryAtividade = mysql_query("SELECT * FROM `atividade` WHERE `ID`='$atividade' ");
+   $verificaNivel = mysql_fetch_array($queryAtividade);
+   $nivel = $verificaNivel['Nivel'];
+
+   $turmas = explode(',', $turmasString); //Só vai ter uma turma
+
+   $query = mysql_query("SELECT * FROM `atividade_aluno` WHERE `ID_Atividade` = '$atividade'");
+
+   while($alunos_atividades = mysql_fetch_array($query)){
 
 
-   $turmas = $_GET['turmas'];
-   $turmas = explode(',', $turmas);
+              $aluno = $alunos_atividades['ID_Aluno'];
+              $resultado = $alunos_atividades['Status'];
 
-   for($i=0; $i<sizeof($turmas); $i++){
+               $queryAlunos = mysql_query("SELECT * FROM `aluno` WHERE `Email` ='$aluno'");
+               $alunoLine = mysql_fetch_array($queryAlunos);
+               $nome = $alunoLine['Nome'];
 
-    $turma = $turmas[$i]; //Verifica atividades que estao na turma
-     $queryTurmasAtividades = mysql_query("SELECT * FROM `atividade_turma` WHERE `ID_turma` = '$turma' ");
+              switch($resultado){
 
-     if(mysql_num_rows($queryTurmasAtividades)>0){ //Tem Atividades a verificar
+               case 'Errou' :
+
+               array_push($mensagem,"
+
+               <button style='background-color:#d9534f' class='buttonLesson' name ='botaoExercicio' >'$nome'<br>Este aluno errou a atividade</button><br/>
+               <br>
 
 
-        while($atividades = mysql_fetch_array($queryTurmasAtividades)){
+               ");
 
-            $atividade = $atividades['ID_atividade'];
-            $query1 = mysql_query("SELECT * FROM `atividade` WHERE `ID` = '$atividade'");
-            $verificaNivel = mysql_fetch_array($query1);
-            if($verificaNivel['Nivel'] == 1){ //Coloca somente atividades do nivel 1
+               break;
 
-            $queryAtividadeAluno = mysql_query("SELECT * FROM `atividade_aluno` WHERE `ID_atividade` = '$atividade' AND `Status` = 'NaoTentou' AND `ID_Aluno` = '$_SESSION[usuario_session]' ");
+               case 'Acertou' :
 
-          if(mysql_num_rows($queryAtividadeAluno)>0){ //Tem atividades nao feitas
-            while($atividadeNaoFeita = mysql_fetch_array($queryAtividadeAluno)){
+               array_push($mensagem,"
 
-              array_push($atividadesParaFazer, $atividadeNaoFeita['ID_Atividade']);
-            }
+               <button class='buttonLesson' name ='botaoExercicio' >'$nome'<br>Este aluno acertou a atividade</button><br/>
+               <br>
 
-           }
 
-            }
+               ");
 
-        }
+               break;
+
+               case 'NaoTentou':
+
+               array_push($mensagem,"
+
+               <button style='background-color:#5F9EA0' class='buttonLesson' name ='botaoExercicio' >'$nome'<br>Este aluno ainda não tentou resolver esta atividade</button><br/>
+               <br>");
+
+               break;
+
+              }
+
+
+
 
 
 
@@ -52,28 +78,6 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
 
 
 
-
-}
-
-
-$atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplicações
-
-
-
-  asort($atividadesParaFazer); //Coloca na ordem dos mais recentes
-  for($b=0;$b<sizeof($atividadesParaFazer);$b++){ //Busca atividades que tem para fazer
-  $ID_atividade = $atividadesParaFazer[$b];
-  $queryAtividade = mysql_query("SELECT * FROM `atividade` WHERE `ID` ='$ID_atividade'");
-
-  $atividadeBusca= mysql_fetch_array($queryAtividade);
-
-  array_push($mensagem, "
-
-              <button type='submit' class='buttonLesson' name ='botaoExercicio' value=".$atividadeBusca['ID'].",".$atividadeBusca['Descricao']. ">" .$atividadeBusca['Descricao']. "</button><br/>
-              <br>
-  ");
-
-  }
 
 
 
@@ -128,9 +132,10 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplicaç�
 
                                   <nav>
                                       <ul class="nav masthead-nav">
-                                          <li><a href="principalAluno.php">Início</a></li>
-                                          <li><a href="minhasTurmasAluno.php">Minhas turmas</a></li>
-                                          <li class="active"><a href="resolverExerciciosNivel1.php">Exercícios Nível 1</a></li>
+                                          <li><a href="principalProf.php">Início</a></li>
+                                          <li><a href="minhasTurmas.php">Minhas turmas</a></li>
+                                          <?php echo "<li><a href='ModuloCorretorTurma.php?turmas=$turmasString'>Resultados da Turma</a></li>" ?>
+                                          <?php echo "<li class='active'><a href=''>Resultado Nível $nivel</a></li>"; ?>
                                           <li><a href="?go=sair">Logoff</a></li>
                                       </ul>
                                   </nav>
@@ -143,28 +148,24 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplicaç�
 
 
                           <div  class="inner cover"  >
-                            <h2 style="text-align:center">Resolver Exercícios Nível 1</h2>
+                            <?php echo "<h2 style='text-align:center'>Resultados Exercícios Nível $nivel</h2>"?>
                             <br>
 
                             <div class="col-md-4 col-xs-12" >
-                             <h3 class="cover-heading" style="font-size:20px;" > Atividades Cadastradas</h3>
-                             <h6>Escolha a atividade a ser resolvida</h6>
+                             <h3 class="cover-heading" style="font-size:20px;" > Resultado dos alunos</h3>
+                             <h6>Abaixo estão os resultados dos alunos</h6>
 
                             <form name="atividade" method="post" action="">
 
                            <!-- Imprimi atividades, caso existam e  Atualizar paginação -->
                            <?php
 
-                                   if(empty($mensagem)){
-                                   echo "<div style='text-shadow:none'class='alert alert-danger alert-link' role='alert'><h4 class='alert-heading'><strong>Atenção!</strong></h4><strong>Não</strong> Existem Atividades Cadastradas&emsp;Entre em contato com o seu <strong>professor</strong>!</div>";
-                                   }
-                                   else{
 
                                    if(!isset($_POST['b'])){
 
                                      $espaços = 0;
                                      $numElement = sizeof($mensagem);
-                                     if($numElement > 0){ //Tem aviso para a pagina 1
+                                     if($numElement > 0){ //Tem atividade
 
                                         for( $index =0; $index<3; $index++){
 
@@ -184,13 +185,7 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplicaç�
 
                                         }
 
-                                        $_SESSION['atualiza'] = 0;
-                                     }
-                                     else{ //Não possui avisos suficientes para esta pagina
 
-                                       echo "<div style='text-shadow:none' class='alert alert-danger' role='alert'><h4 class='alert-heading'><strong>Atenção </strong> </h4>Não existem atividades Cadastradas.&emsp;Entre em contato com o seu professor</div>
-                                       <br><br><br><br><br><br><br><br><br><br>";
-                                       $_SESSION['atualiza'] = 0;
                                      }
 
 
@@ -223,7 +218,7 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplicaç�
                                    }
                                    else{ //Não possui avisos suficientes para esta pagina
 
-                                     echo "<div style='text-shadow:none' class='alert alert-danger' role='alert'><h4 class='alert-heading'><strong>Atenção </strong> </h4>Não existem atividades Cadastradas.&emsp;Entre em contato com o seu professor</div>
+                                     echo "<div style='text-shadow:none' class='alert alert-danger' role='alert'><h4 class='alert-heading'><strong>Atenção </strong> </h4>Não existem atividades Cadastradas nesta página.</div>
                                      <br><br>";
                                    }
                                  }
@@ -256,7 +251,7 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplicaç�
                                    }
                                    else{ //Não possui avisos suficientes para esta pagina
 
-                                     echo "<div style='text-shadow:none' class='alert alert-danger' role='alert'><h4 class='alert-heading'><strong>Atenção </strong> </h4>Não existem atividades Cadastradas.&emsp;Entre em contato com o seu professor</div>
+                                     echo "<div style='text-shadow:none' class='alert alert-danger' role='alert'><h4 class='alert-heading'><strong>Atenção </strong> </h4>Não existem atividades Cadastradas nesta página.</div>
                                      <br><br>";
                                    }
                                  }
@@ -289,7 +284,7 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplicaç�
                                    }
                                    else{ //Não possui avisos suficientes para esta pagina
 
-                                     echo "<div style='text-shadow:none' class='alert alert-danger' role='alert'><h4 class='alert-heading'><strong>Atenção </strong> </h4>Não existem atividades Cadastradas.&emsp;Entre em contato com o seu professor</div>
+                                    echo "<div style='text-shadow:none' class='alert alert-danger' role='alert'><h4 class='alert-heading'><strong>Atenção </strong> </h4>Não existem atividades Cadastradas nesta página.</div>
                                      <br><br>";
                                    }
                                  }
@@ -322,13 +317,13 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplicaç�
                                    }
                                    else{ //Não possui avisos suficientes para esta pagina
 
-                                     echo "<div style='text-shadow:none' class='alert alert-danger' role='alert'><h4 class='alert-heading'><strong>Atenção </strong> </h4>Não existem atividades Cadastradas.&emsp;Entre em contato com o seu professor</div>
+                                     echo "<div style='text-shadow:none' class='alert alert-danger' role='alert'><h4 class='alert-heading'><strong>Atenção </strong> </h4>Não existem atividades Cadastradas nesta página.</div>
                                      <br><br>";
                                    }
                                  }
 
 
-                               }
+
 
 
                             ?>
@@ -358,80 +353,34 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplicaç�
 
 
                           <div class="col-md-8 col-xs-12" style="height:400px;border-left:solid 1px LightBlue">
-                        <h3 class="cover-heading" style="font-size:20px">Atividade</h3>
-                        <h6>Ajuste os blocos abaixo para que a  ordem de execução do algoritmo esteja correta</h6>
+                        <h3 class="cover-heading" style="font-size:20px">Atividade Cadastrada</h3>
+                        <h6>Abaixo esta a ordem de blocos cadastrada</h6>
 
                         <form name="blocos" method="post" action="">
 
                      <div id="columns">
 
                        <?php
-                   $ordemBlocos = array();
-                           if(@$_POST['botaoExercicio'] ){
 
-                               if(!empty($ordemBlocos)){
-                                 $ordemBlocos = array();
-                               }
+                       $queryBlocos = mysql_query("SELECT * FROM `bloco_linhas` WHERE `ID_atividade`='$atividade'");
+                       $j=1;
+                       while($blocos = mysql_fetch_array($queryBlocos)){
 
-                               $value =explode( ',',$_POST['botaoExercicio']); //Pega informações da atividade
-                               $atividade = $value[0];
-                               $titulo = $value[1];
-
-                               $queryBlocos = mysql_query("SELECT * FROM `bloco_linhas` WHERE `ID_atividade` = '$atividade'");
-                               $blocos = array();
-
-                              ;
-                               while($busca = mysql_fetch_array($queryBlocos)){ //Coloca em array os blocos, Sempre serão 3
-                               $bloco = $busca['texto'];
-
-                               array_push($blocos, "
-
-                                <div  draggable='true'  style='text-shadow:none;border-radius:4px' class='panel-primary column'>
-                                  <div style='border-radius:4px'class='panel-heading'>".$titulo."</div>
-                                  <div id='bloco".$busca['Bloco']."'  style='background-color:black;border-radius:4px'class='panel-body'>".$bloco."</div>
-                                  <input type='hidden'name='idAtividade' value='".$atividade."'/>
-                                </div>
-
-                                   ");
-
-
-                               }
-
-                               for($i=0; $i<3; $i++){ //Monta ordem aleatória dos blocos
-                                   $num;
-                                  do{ //Procura numero aleatorio
-                                    $num = rand(0,2);
-
-                                    if(!in_array($num, $ordemBlocos,false)){
-
-                                         array_push($ordemBlocos, $num);  //Adiciona na ordem
-
-                                    }
-
-                                   }
-                                  while(sizeof($ordemBlocos)<3);
+                          $bloco = $blocos['texto'];
 
 
 
-                               }
+                         echo   "
+                         <div class='col-md-4'>
+                             <div    style='text-shadow:none;border-radius:4px' class='panel-primary'>
+                               <div style='border-radius:4px'class='panel-heading'>Bloco $j</div>
+                               <div id='bloco$j'  style='background-color:black;border-radius:4px'class='panel-body'>$bloco</div>
+                             </div>
+                          </div>
+                                ";
 
-
-                               for($i=0; $i<3; $i++){ //Imprime blocos na ordem gerada
-                                 $a = $i+1;
-
-                                 echo "<div id='coluna".$a."'name='bloco' class='col-md-4 col-xs-4'>";
-                                 echo $blocos[$ordemBlocos[$i]];
-                                 echo "</div>";
-                                 echo "<input id='posicao'type='hidden' value='".$a."' name='posicao' >";
-
-
-
-                               }
-
-
-                           }
-
-
+                         $j++;
+                       }
 
 
 
@@ -447,21 +396,8 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplicaç�
                             <br><br><br><br><br><br><br><br><br><br><br><br>
 
 
-                          <button class="btn btn-info"  onclick="javascript:verificarResposta();">Enviar Resposta</button>
-                          <button class="btn btn-danger" onclick="javascript:cancelarAtividade();">Cancelar</button>
-                          <br><br>
 
-                          <form style="visibility:hidden"method="POST" action="../model/action.php">
-                            <?php
-                                   $turmasString = implode(',' , $turmas);
-                                   echo "<input type='hidden' name='turmas' value=$turmasString/>";
 
-                             ?>
-                            <input id="atividade"type="hidden" name="atividade" value="">
-                            <input name="action" value="gerarResultado" />
-                            <input id="acertou" name="resultado" type="submit" value="acertou,1" />
-                            <input id="errou" name="resultado" type="submit" value="errou,1" />
-                          </form>
 
                    </div>
 

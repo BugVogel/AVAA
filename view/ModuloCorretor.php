@@ -60,8 +60,8 @@ if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) 
                                 <nav>
                                     <ul class="nav masthead-nav">
                                         <li><a href="principalProf.php">Início</a></li>
-                                        <li class="active"><a href="">Minhas turmas</a></li>
-                                        <li><a href="ModuloCorretor.php">Módulo corretor</a></li>
+                                        <li ><a href="minhasTurmas.php">Minhas turmas</a></li>
+                                        <li class="active"><a href="ModuloCorretor.php">Módulo corretor</a></li>
                                         <li><a href="?go=sair">Logoff</a></li>
                                     </ul>
                                 </nav>
@@ -78,33 +78,27 @@ if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) 
                                 <form class="" method="post" action="../model/action.php" name="formulario"  id="formulario">
                                     <input type="hidden" id="action" name="action" />
 
-                                    <a href="cadastroTurma.php" class="btn btn-success btn-lg" role="button">Nova turma</a>
-                                    <br>
+                                    <h3>Módulo Corretor</h3>
+                                    <h5>Selecione clicando na turma que deseja corrigir para ser redirecionado</h5>
                                     <br>
                                     <?php
                                     $email = $_SESSION['usuario_session'];
                                     $res = mysql_query("select * from turma WHERE `Professor` = '$email'");
                                     $nLinhas = mysql_num_rows($res);
                                     if ($nLinhas > 0) {
-                                        echo "<table  class='table''align='center' border=2 cellspacing=3 cellpadding=2><tr><td><b>&emsp; DISCIPLINA &emsp;</b></td><td><b>&emsp; INSTITUIÇÃO &emsp;</b></td><td></td></tr>";
+                                        echo "<table  class='table''align='center' border=2 cellspacing=3 cellpadding=2><tr><td><b>&emsp; DISCIPLINA &emsp;</b></td><td><b>&emsp; INSTITUIÇÃO &emsp;</b></td></tr>";
 
                                         /* Enquanto houver dados na tabela para serem mostrados será executado tudo que esta dentro do while */
                                         while ($escrever = mysql_fetch_array($res)) {
 
                                             /* Escreve cada linha da tabela */
-                                            echo "<tr><td><a name=\"disciplinas[]\" id=\"disciplinas[]\" value=\"" . $escrever['Disciplina'] . " - " . $escrever['Escola'] . "\" href=\"cadastroAlunoTurma.php?ID=" . $escrever['ID'] . "\">" . $escrever['Disciplina'] . "</a>&emsp;</td><td>" . "" . $escrever['Escola'] . "</td><td>&emsp;"
-                                            . "<input name=\"turmas[]\" type=\"checkbox\" id=\"turmas[]\" value=" . $escrever['ID'] . ">"
-                                            . "&emsp;</td></tr>";
+                                            echo "<tr><td><a name=\"disciplinas[]\" id=\"disciplinas[]\" value=\"" . $escrever['Disciplina'] . " - " . $escrever['Escola'] . "\" href=\"ModuloCorretorTurma.php?turmas=" . $escrever['ID'] . "\">" . $escrever['Disciplina'] . "</a>&emsp;</td><td>" . "" . $escrever['Escola'] . "</td>&emsp;"
+                                            . "</tr>";
                                         }/* Fim do while */
 
 
                                         echo "</table>"; /* fecha a tabela apos termino de impressão das linhas */
-                                        echo "<br>";
-                                        echo "<a type=\"button\" value=\"Excluir turma(s)\" class=\"btn btn-danger\" onclick=\"javascript:doPost('formulario', 'excluirTurma');\">Excluir turma(s)</a>";
-                                        echo "&emsp;";
-                                        echo "<a type=\"button\" class=\"btn btn-warning\" value=\"Cadastrar aviso\" onclick=\"javascript:doPost('formulario', 'cadastroAviso')\">Cadastrar aviso</a>";
-                                        echo "&emsp;";
-                                        echo "<a type=\"button\" class=\"btn btn-info\" value=\"Cadastrar atividade\" onclick=\"javascript:doPost('formulario', 'cadastrarAtividade');\">Cadastrar atividade</a>";
+
                                     }
                                     else{
                                         echo "<h3 class=cover-heading style=padding: 2px;>" . "Não há turmas cadastradas!" . "</h3>";

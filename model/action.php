@@ -98,6 +98,10 @@ function redCadastrarAtividade(){
     else if($nivel == 2){
          echo "<meta http-equiv='refresh' content='0, url=../view/cadastroAtividadeMedio.php?turmas=$turmas'>";
     }
+    else if($nivel == 3){
+
+      echo "<meta http-equiv='refresh' content='0, url=../view/cadastrarAtividadeDificil.php?turmas=$turmas'>";
+    }
 }
 
 function cadastrarAtividade(){
@@ -161,11 +165,169 @@ function salvarAtividadeFacil(){
     echo '</script>';
 }
 
+
+function salvarAtividadeNivel2(){
+
+       //Pega informações necessárias
+       $turmas = $_POST['turmas'];
+       $texto = explode("\n", $_SESSION['codigo']); //Existe problema no '<' quando usado no código
+       $linhas = $_POST['linhas'];
+       $blocos = array();
+       $b=0;
+       $prox=0;
+       $quantidade_blocos = sizeof($linhas);
+
+       if( !($texto[$linhas[0]-1] == $texto[0]) ){  //Não selecionou a primeira linha
+         $quantidade_blocos++;
+       }
+
+
+            for($i=0; $i<$quantidade_blocos;$i++){
+              for($j=$b; $j<sizeof($texto);$j++){
+
+
+                     if(isset($linhas[$prox])){
+
+                       if($texto[$linhas[$prox]-1] == $texto[$j]){ //Para quando acha linha
+
+                              if(empty($blocos[$i])){ //Primeira linha do bloco
+                                $blocos[$i] = $texto[$j];
+                                $prox +=1;
+                                goto end; //Finaliza essa etapa do loop
+                              }
+                              else{ //Achou a linha selecionada do bloco seguinte
+
+                                $b = $j; //Salva lugar que parou
+                                break;
+                              }
+
+
+                       }
+
+                     }
+                     if(strpos($texto[$j],"}")){ //Para em fechamento de bloco
+                          if(!isset($blocos[$i])){ //Faz o index existir
+                            $blocos[$i] = "";
+                           }
+                           $lineCode =  $blocos[$i]. "<br>". $texto[$j] ;  //Adicionar
+                           $blocos[$i] = $lineCode;
+                           $b = $j+1;
+                           break;
+                     }
+                     else{ //Adiciona ao bloco
+
+                               if(!isset($blocos[$i])){ //Faz o index existir
+                                 $blocos[$i] = "";
+                               }
+
+
+                              $lineCode =  $blocos[$i]. "<br>". $texto[$j] ;  //Adicionar
+                              $blocos[$i] = $lineCode;
+
+
+
+                       }
+
+                      end: //Ponto de ida, do goto
+
+              }
+            }
+
+           $descricao = $_SESSION['descricao_nivel2'];
+           $nivel = $_SESSION['nivel'];
+           $num_Blocos = sizeof($blocos);
+           //Coloca em tabela atividade
+           mysql_query("INSERT INTO `atividade` (`Descricao`, `Nivel`, `N_Blocos`) VALUES ('$descricao', '$nivel', '$num_Blocos')");
+           $ID = mysql_insert_id();
+
+           for($i = 0; $i<sizeof($blocos); $i++){ //Insere blocos em tabela bloco_linhas
+
+               $num = $i+1;
+               //Coloca blocos em tabela
+               mysql_query("INSERT INTO `bloco_linhas`(`ID_atividade`,`Bloco`,`texto`) VALUES ('$ID', '$num','$blocos[$i]') ");
+
+           }
+
+           for($i = 0; $i<sizeof($turmas); $i++) //Adiciona atividades em turmas e em cada aluno
+           {
+               $idTurma = $turmas[$i];
+               $res = mysql_query("INSERT INTO `atividade_turma` (`ID_atividade`, `ID_turma`) VALUES ('$ID', '$idTurma')");
+
+               $procura = mysql_query("SELECT * FROM `turma_alunos` WHERE `ID_turma` = $idTurma");
+
+               while($alunos = mysql_fetch_array($procura)){
+
+                    $aluno = $alunos['ID_aluno'];
+
+                    $res = mysql_query("INSERT INTO `atividade_aluno` (`ID_atividade`,`ID_Aluno`,`Status`) VALUES ('$ID', '$aluno', 'NaoTentou')");
+
+               }
+
+
+           }
+
+            echo "<meta http-equiv='refresh' content='0, url=../view/minhasTurmas.php'>";
+            echo "<script>alert('Atividade cadastrada com sucesso!')</script>";
+
+     }
+
+
+     function salvarAtividadeDificil(){
+
+
+               $turmas = $_POST['turmas'];
+               $descricao = $_POST['descricao'];
+               $codigo = $_POST['codigo'];
+               $nivel = 3;
+               $blocos = 1;
+
+
+               mysql_query("INSERT INTO `atividade` (`Descricao`, `Nivel`, `N_Blocos`) VALUES ('$descricao','$nivel', '$blocos')");
+               $ID = mysql_insert_id();
+
+
+               $res = mysql_query("INSERT INTO `bloco_linhas` (`ID_atividade`, `Bloco`, `texto`) VALUES ('$ID', '1', '".$codigo."')");
+
+
+               for($i = 0; $i<sizeof($turmas); $i++)
+               {
+                   $idTurma = $turmas[$i];
+                   $res = mysql_query("INSERT INTO `atividade_turma` (`ID_atividade`, `ID_turma`) VALUES ('$ID', '$idTurma')");
+
+                   $procura = mysql_query("SELECT * FROM `turma_alunos` WHERE `ID_turma` = $idTurma");
+
+                   while($alunos = mysql_fetch_array($procura)){
+
+                        $aluno = $alunos['ID_aluno'];
+
+                        $res = mysql_query("INSERT INTO `atividade_aluno` (`ID_atividade`,`ID_Aluno`,`Status`) VALUES ('$ID', '$aluno', 'NaoTentou')");
+
+                   }
+
+
+                  echo "<meta http-equiv='refresh' content='0, url=../view/minhasTurmas.php'>";
+                  echo "<script>alert('Atividade Cadastrada com sucesso!')</script>";
+
+
+
+
+     }
+
+   }
+
+
+
+
+
+
+
 function editarAtividade(){
     session_start();
     $_SESSION['codigo'] = $_POST['codigo'];
     $_SESSION['nivel'] = 2;
-    echo "<meta http-equiv='refresh' content='0, url=../view/editarAtividade.php'>";
+    $_SESSION['descricao_nivel2'] = $_POST['descricao'];
+    $turmas = $_POST['turmas'];
+    echo "<meta http-equiv='refresh' content='0, url=../view/editarAtividade.php?turmas=$turmas'>";
 
 }
 
@@ -321,12 +483,12 @@ function resolverExercicio(){
      }
      else if($nivel ==2){
 
-       echo "<script>alert('Modo ainda não implementado')</script>";
+       echo "<meta http-equiv='refresh' content='0, url=../view/resolverExerciciosNivel2.php?turmas=$turmas'/>";
 
      }
      else if($nivel ==3){
 
-       echo "<script>alert('Modo ainda não implementado')</script>";
+       echo "<meta http-equiv='refresh' content='0, url=../view/resolverExerciciosNivel3.php?turmas=$turmas'>";
 
      }
 
@@ -336,12 +498,15 @@ function resolverExercicio(){
 
 }
 
-function gerarResultadoNivel1(){
+function gerarResultado(){
 
 
      $atividade = $_POST['atividade'];
+     $resultado =  explode(',', $_POST['resultado']);
+     $nivel = $resultado[1];
+     $resultado = $resultado[0];
 
-     if($_POST['resultado'] == 'acertou'){ //Acertou a ordem
+     if($resultado == 'acertou'){ //Acertou a ordem
 
        $usuario = $_SESSION['usuario_session'];
        $queryAtividade = mysql_query("UPDATE `atividade_aluno` SET `Status` ='Acertou' WHERE `ID_Aluno` = '$usuario' AND `ID_Atividade`= '$atividade' ");
@@ -349,13 +514,13 @@ function gerarResultadoNivel1(){
 
        $turmas = $_POST['turmas'];
 
-       echo "<meta http-equiv='refresh' content='0, url=../view/resolverExerciciosNivel1.php?turmas=$turmas' />";
+       echo "<meta http-equiv='refresh' content='0, url=../view/resolverExerciciosNivel$nivel.php?turmas=$turmas' />";
 
 
 
      }
      else
-     if($_POST['resultado'] == 'errou'){ //Errou a ordem
+     if($resultado == 'errou'){ //Errou a ordem
 
        $usuario = $_SESSION['usuario_session'];
        $queryAtividade = mysql_query("UPDATE `atividade_aluno` SET `Status` ='Errou' WHERE `ID_Aluno` = '$usuario' AND `ID_Atividade`= '$atividade' ");
@@ -363,7 +528,7 @@ function gerarResultadoNivel1(){
 
        $turmas = $_POST['turmas'];
 
-       echo "<meta http-equiv='refresh' content='0, url=../view/resolverExerciciosNivel1.php?turmas=$turmas' />";
+       echo "<meta http-equiv='refresh' content='0, url=../view/resolverExerciciosNivel$nivel.php?turmas=$turmas' />";
 
 
 
@@ -373,6 +538,28 @@ function gerarResultadoNivel1(){
 
 
 }
+
+function gerarResultadoNivel3(){
+
+          $turmas = $_POST['turmas'];
+          $idAtividade = $_POST['atividade'];
+          $usuario = $_SESSION['usuario_session'];
+          $codigo = $_POST['texto'];
+
+        $query = mysql_query("UPDATE `atividade_aluno` SET `Resposta_Nivel_3`='$codigo', `Status`='Tentou' WHERE `ID_Aluno`='$usuario' AND `ID_Atividade`='$idAtividade'  ");
+
+        echo"<script>alert('Resposta enviada com sucesso')</script>";
+        echo "<meta  http-equiv='refresh' content='0, url=../view/resolverExerciciosNivel3.php?turmas=$turmas' />";
+
+
+
+
+
+
+}
+
+
+
 
 
 
