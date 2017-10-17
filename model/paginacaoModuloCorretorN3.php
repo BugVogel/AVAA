@@ -34,7 +34,7 @@ if(isset($_POST['bN3'])){
               for( $index =3; $index<6; $index++){
 
                        if($index < $numElement){ //Se tiver menos de 3 avisos, é tratado
-                       echo $mensagemNive3[$index];
+                       echo $mensagemNivel3[$index];
 
                         }
 

@@ -123,7 +123,7 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
                               <div class='col-md-5 col-md-offset-1'>
                                   <div    style='text-shadow:none;border-radius:4px' class='panel-primary'>
                                     <div style='border-radius:4px'class='panel-heading'>Bloco Único de Resposta do Aluno</div>
-                                    <textarea id='bloco1' cols='40' rows='$linhas' name='correcao'  style='background-color:black;border-radius:4px'class='panel-body'>$resposta</textarea>
+                                    <textarea id='bloco1' cols='46' rows='$linhas' name='correcao'  style='background-color:black;border-radius:4px'class='panel-body'>$resposta</textarea>
                                   </div>
                                </div>";
 

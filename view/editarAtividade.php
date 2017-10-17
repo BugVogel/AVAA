@@ -64,7 +64,7 @@ if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) 
                         </div>
 
 
-
+                   <div class='pre-scrollable' >
                         <form class="" method="post" action="../model/action.php" name="formulario" id="formulario">
                           <input type="hidden" name="action" id="action"/>
     <!--                        <input type="hidden" id="action" name="action" />
@@ -111,7 +111,7 @@ if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) 
 
                                     $texto = explode("\n", $_SESSION['codigo']);
                                     $id = 1;
-                                    
+
                                     echo "<table align='center' border=2 cellspacing=3 cellpadding=2 style=\"font-size: 110%;\">";
                                     foreach($texto as $nome){
 
@@ -126,6 +126,8 @@ if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) 
                             ?>
                             <br>
                             <br>
+                            </div>
+                            <br><br>
                             <input type="button" value="Salvar" class="btn btn-success" onclick="javascript:doPost('formulario', 'salvarAtividadeNivel2');">
 
 

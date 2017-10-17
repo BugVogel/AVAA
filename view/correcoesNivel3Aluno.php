@@ -159,13 +159,11 @@ $atividadesRespondidas =  array_unique($atividadesRespondidas);    //Tira duplic
      <body>
 
 
-               <div class="site-wrapper">
-
-                   <div class="site-wrapper-inner">
+              
 
                        <div class="cover-container">
 
-                           <div class="masthead clearfix">
+
                                <div class="inner">
 
                                    <nav>
@@ -178,7 +176,7 @@ $atividadesRespondidas =  array_unique($atividadesRespondidas);    //Tira duplic
                                        </ul>
                                    </nav>
                                </div>
-                           </div>
+
 
                            </div>
 
@@ -528,9 +526,7 @@ $atividadesRespondidas =  array_unique($atividadesRespondidas);    //Tira duplic
                              </div>
                            </div> -->
 
-                       </div>
 
-                   </div>
 
 
          <!-- Bootstrap core JavaScript

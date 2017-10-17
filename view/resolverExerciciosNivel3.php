@@ -400,10 +400,11 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplica√ß√
 
 
 
-
-
-                                 echo "<div id='coluna'name='bloco' class='col-md-4 col-xs-12 col-md-offset-4'>";
+                                 echo "<div class='col-md-4 col-xs-12 col-md-offset-4'>";
+                                 echo "<label for='bloco'> Bloco √önico</label>";
+                                 echo "<div id='coluna'name='bloco' >";
                                  echo $blocos;
+                                 echo "</div>";
                                  echo "</div>";
 
 
@@ -433,11 +434,25 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplica√ß√
 
                         </form>
 
-                            <br><br><br><br><br><br><br><br><br><br><br><br>
+                            <?php
+
+                        if(isset($linhas)){
+                               for($i=0; $i<$linhas+5;$i++){
+                                 echo "<br>";
+                               }
+                          }
+                          else{
+
+                            echo "<br><br><br><br><br><br><br><br><br>";
+                          }
+
+                            ?>
+
 
                             <button class="btn btn-info"  onclick="javascript:enviarAtividadeNivel3();">Enviar Resposta</button>
                             <button class="btn btn-danger" onclick="javascript:cancelarAtividade();">Cancelar</button>
-                            <br><br>
+
+
 
                           <form style="visibility:hidden"method="POST" action="">
 

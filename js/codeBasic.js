@@ -21,12 +21,13 @@
 
 							panel2[a].style.maxHeight = "0px"; //Fecha
               var acc2 = document.getElementsByClassName("scrollAvisosButton");
+
               for(var b = 0; b< acc2.length; b++){ //Procura o button desse panel que estava aberto
 
                 if(acc2[b].nextElementSibling == panel2[a]){
 
 
-                  acc2[b].style.content = '\\02795'; //Muda sinal para +
+                  acc2[b].className = 'scrollAvisosButton' //Muda sinal para +
                 }
 
 

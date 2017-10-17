@@ -57,19 +57,19 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
         <![endif]-->
     </head>
 
-    <body>
+    <body >
 
 
-        <div class="site-wrapper">
 
-            <div class="site-wrapper-inner">
+
+
 
                 <div class="cover-container">
 
-                    <div class="masthead clearfix">
+                    <div >
                         <div class="inner">
 
-                            <nav>
+                            <nav >
                                 <ul class="nav masthead-nav">
                                     <li><a href="principalProf.php">Início</a></li>
                                     <li><a href="minhasTurmas.php">Minhas turmas</a></li>
@@ -85,7 +85,7 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
    <br><br>
 
 
-                    <div  class="inner cover"  >
+                    <div class="inner cover"  >
                       <h2 style="text-align:center"> Resultado de Atividades</h2>
                       <h5>Selecione a atividade para verificar o resultado de cada aluno nas turmas cadastradas</h5>
                       <br>
@@ -212,11 +212,8 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
 
 
 
+</div>
 
-
-
-
-              </div>
 
 
 
@@ -225,7 +222,6 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
 
 
 
-           </div>
 
 
 
@@ -237,9 +233,9 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
                       </div>
                     </div> -->
 
-                </div>
 
-            </div>
+
+
 
 
 

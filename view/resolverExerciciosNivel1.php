@@ -418,12 +418,13 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplicaç�
 
                                for($i=0; $i<3; $i++){ //Imprime blocos na ordem gerada
                                  $a = $i+1;
-
-                                 echo "<div id='coluna".$a."'name='bloco' class='col-md-4 col-xs-4'>";
+                                 echo "<div class='col-md-4 col-xs-4'>";
+                                 echo "<label for='bloco' >Posição $a</label>";
+                                 echo "<div id='coluna".$a."'name='bloco' >";
                                  echo $blocos[$ordemBlocos[$i]];
                                  echo "</div>";
                                  echo "<input id='posicao'type='hidden' value='".$a."' name='posicao' >";
-
+                                 echo "</div>";
 
 
                                }

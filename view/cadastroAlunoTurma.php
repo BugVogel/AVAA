@@ -111,12 +111,12 @@ if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) 
                             <hr width=100%>
 
 
-                            <input size="60" style="color:black;" type="email" id="email" name="email" placeholder="Digite o endereço de e-mail do aluno" required autofocus style=""><br>
+                            <input size="60" class='form-control'style="color:black;" type="email" id="email" name="email" placeholder="Digite o endereço de e-mail do aluno" required autofocus><br>
 
                             <br>
                             <!--<button type="submit" class="btn btn-success" role="button" value="cadastrarAluno">Adicionar aluno</button>-->
 
-                            <input type="button" value="Adicionar aluno" class="btn btn-success" onclick="javascript:doPost('formulario', 'salvar');">	
+                            <input type="button" value="Adicionar aluno" class="btn btn-success" onclick="javascript:doPost('formulario', 'salvar');">
 
 
                         </form>
