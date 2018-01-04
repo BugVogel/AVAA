@@ -111,7 +111,8 @@ if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) 
                                         echo "<a type=\"button\" value=\"Resolver Exercicios\" class=\"btn btn-success\" onclick=\"javascript:doPostForm3('formulario3', 'chamaResolverExercicios');\">Resolver Exercício(s)</a>";
                                         echo "&emsp;";
                                         echo "<a type=\"button\" class=\"btn btn-warning\" value=\"Avisos Aluno\" onclick=\"javascript:doPostForm3('formulario3', 'chamaAvisos')\">Avisos</a>";
-
+                                        echo "&emsp;";
+                                        echo "<a type=\"button\" class=\"btn btn-default\" value=\"Recursos Aluno\" onclick=\"javascript:doPostForm3('formulario3', 'chamaRecursos')\">Recursos</a>";
 
 
 

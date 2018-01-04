@@ -501,13 +501,18 @@ function resolverExercicio(){
 function gerarResultado(){
 
 
+
      $atividade = $_POST['atividade'];
      $resultado =  explode(',', $_POST['resultado']);
      $nivel = $resultado[1];
      $resultado = $resultado[0];
 
+     if(!isset($_SESSION['errou'.$atividade]) ) //conta quantas errou
+     $_SESSION['errou'.$atividade] = 0;
+
      if($resultado == 'acertou'){ //Acertou a ordem
 
+       unset($_SESSION['errou'.$atividade]);
        $usuario = $_SESSION['usuario_session'];
        $queryAtividade = mysql_query("UPDATE `atividade_aluno` SET `Status` ='Acertou' WHERE `ID_Aluno` = '$usuario' AND `ID_Atividade`= '$atividade' ");
 
@@ -519,9 +524,15 @@ function gerarResultado(){
 
 
      }
-     else
-     if($resultado == 'errou'){ //Errou a ordem
+     else{
 
+
+
+          $_SESSION['errou'.$atividade] += 1;
+
+     if( $resultado == 'errou' && $_SESSION['errou'.$atividade] == 2){ //Errou a ordem
+
+       unset($_SESSION['errou'.$atividade]);
        $usuario = $_SESSION['usuario_session'];
        $queryAtividade = mysql_query("UPDATE `atividade_aluno` SET `Status` ='Errou' WHERE `ID_Aluno` = '$usuario' AND `ID_Atividade`= '$atividade' ");
 
@@ -533,7 +544,19 @@ function gerarResultado(){
 
 
      }
+     else{
+            $turmas = $_POST['turmas'];
+            echo "<script>alert('Ordem incorreta, tente mais uma vez.')</script>";
+            echo "<meta http-equiv='refresh' content='0, url=../view/resolverExerciciosNivel$nivel.php?turmas=$turmas' />";
 
+
+     }
+
+
+
+
+
+   }
 
 
 
@@ -552,6 +575,62 @@ function gerarResultadoNivel3(){
         echo "<meta  http-equiv='refresh' content='0, url=../view/resolverExerciciosNivel3.php?turmas=$turmas' />";
 
 
+
+
+
+
+}
+
+
+function cadastrarRecurso(){
+
+  if(isset($_POST['turmas'])){
+         if(sizeof($_POST['turmas']) < 2){
+
+
+            $turmas=implode(',',$_POST['turmas']);
+            echo "<meta http-equiv='refresh' content='0, url=../view/cadastrarRecurso.php?turmas=$turmas'/>";
+
+          }
+          else{
+                  echo "<script>alert('Selecione apenas uma turma')</script>";
+                  echo "<meta http-equiv='refresh' content='0, url=../view/minhasTurmas.php'/>";
+
+          }
+  }
+  else{
+
+      echo "<script>alert('Você não selecionou nenhuma turma')</script>";
+      echo "<meta  http-equiv='refresh' content='0, url=../view/minhasTurmas.php'/>";
+
+  }
+
+
+
+}
+
+
+function chamaRecursos(){
+
+  if(isset($_POST['turmas'])){
+       if(sizeof($_POST['turmas']) < 2){
+
+
+            $turmas=implode(',',$_POST['turmas']);
+            echo "<meta http-equiv='refresh' content='0, url=../view/recursosAluno.php?turmas=$turmas'/>";
+            }
+            else{
+                echo "<script>alert('Selecione apenas uma turma')</script>";
+                echo "<meta http-equiv='refresh' content='0, url=../view/minhasTurmasAluno.php'/>";
+            }
+
+  }
+  else{
+
+      echo "<script>alert('Você não selecionou nenhuma turma')</script>";
+      echo "<meta  http-equiv='refresh' content='0, url=../view/minhasTurmas.php'/>";
+
+  }
 
 
 

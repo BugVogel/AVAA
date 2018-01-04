@@ -102,7 +102,7 @@ if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) 
                                     }
                                     else if($_SESSION['nivel'] == 2){
                                         echo "<font size=\"6\" style=\"text-decoration: underline;\"> Nível 2</font> <br>";
-                                        echo "<font size=\"3\"> Você deve selecionar as linhas que determinam o início dos blocos condicionais ou de repetição.</font> <br><br>";
+                                        echo "<font size=\"3\"> Você deve selecionar as linhas que determinam o início dos blocos condicionais ou de repetição e as linhas que deseja quebrar para transformar em bloco.</font> <br><br>";
                                     }
                                     else if($_SESSION['nivel'] == 3){
                                         echo "<font size=\"6\" style=\"text-decoration: underline;\"> Nível difícil</font> <br>";

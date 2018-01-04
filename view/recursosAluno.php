@@ -7,6 +7,17 @@ $_SESSION['atualiza'] = 1;
 if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) {
     echo "<meta http-equiv='refresh' content='0, url=index.php'>";
 } else {
+
+   $turmas;
+   if(isset($_GET['turmas'])){
+
+     $turmas = $_GET['turmas'];
+     $turmas = explode(',',$turmas);
+
+   }
+
+
+
     ?>
     <html lang="pt">
         <head>
@@ -48,19 +59,18 @@ if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) 
         <body>
 
 
-            <div class="site-wrapper">
 
-                <div class="site-wrapper-inner">
 
                     <div class="cover-container">
 
-                        <div class="masthead clearfix">
+                        <div >
                             <div class="inner">
 
                                 <nav>
                                     <ul class="nav masthead-nav">
                                         <li><a href="principalProf.php">Início</a></li>
-                                        <li class="active"><a href="">Minhas turmas</a></li>
+                                        <li ><a href="minhasTurmasAluno.php">Minhas turmas</a></li>
+                                        <li class="active"><a href="">Recursos</a></li>
                                         <li><a href="ModuloCorretor.php">Módulo corretor</a></li>
                                         <li><a href="?go=sair">Logoff</a></li>
                                     </ul>
@@ -70,56 +80,85 @@ if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) 
 
 
                         <!--                    <h2 class="cover-heading" style="padding: 2px;">MINHAS TURMAS</h2>-->
+<br> <br> <br> <br>
+                        <div class="row">
+                              <div class="col-md-12">
+                                <h3>Recursos</h3>
+                              </div>
+                          </div>
+           <div class="row">
+                          <div class="col-md-12">
+                          <?php
 
-                        <div class="inner cover">
-
-
-                            <div align="center" style="font-size:20px;">
-                                <form class="" method="post" action="../model/action.php" name="formulario"  id="formulario">
-                                    <input type="hidden" id="action" name="action" />
-
-                                    <a href="cadastroTurma.php" class="btn btn-success btn-lg" role="button">Nova turma</a>
-                                    <br>
-                                    <br>
-                                    <?php
-                                    $email = $_SESSION['usuario_session'];
-                                    $res = mysql_query("select * from turma WHERE `Professor` = '$email'");
-                                    $nLinhas = mysql_num_rows($res);
-                                    if ($nLinhas > 0) {
-                                        echo "<table  class='table''align='center' border=2 cellspacing=3 cellpadding=2><tr><td><b>&emsp; DISCIPLINA &emsp;</b></td><td><b>&emsp; INSTITUIÇÃO &emsp;</b></td><td></td></tr>";
-
-                                        /* Enquanto houver dados na tabela para serem mostrados será executado tudo que esta dentro do while */
-                                        while ($escrever = mysql_fetch_array($res)) {
-
-                                            /* Escreve cada linha da tabela */
-                                            echo "<tr><td><a name=\"disciplinas[]\" id=\"disciplinas[]\" value=\"" . $escrever['Disciplina'] . " - " . $escrever['Escola'] . "\" href=\"cadastroAlunoTurma.php?ID=" . $escrever['ID'] . "\">" . $escrever['Disciplina'] . "</a>&emsp;</td><td>" . "" . $escrever['Escola'] . "</td><td>&emsp;"
-                                            . "<input name=\"turmas[]\" type=\"checkbox\" id=\"turmas[]\" value=" . $escrever['ID'] . ">"
-                                            . "&emsp;</td></tr>";
-                                        }/* Fim do while */
+                             $turma = explode(',', $_GET['turmas']); //sempre será uma
 
 
-                                        echo "</table>"; /* fecha a tabela apos termino de impressão das linhas */
-                                        echo "<br>";
-                                        echo "<a type=\"button\" value=\"Excluir turma(s)\" class=\"btn btn-danger\" onclick=\"javascript:doPost('formulario', 'excluirTurma');\">Excluir turma(s)</a>";
-                                        echo "&emsp;";
-                                        echo "<a type=\"button\" class=\"btn btn-warning\" value=\"Cadastrar aviso\" onclick=\"javascript:doPost('formulario', 'cadastroAviso')\">Cadastrar aviso</a>";
-                                        echo "&emsp;";
-                                        echo "<a type=\"button\" class=\"btn btn-info\" value=\"Cadastrar atividade\" onclick=\"javascript:doPost('formulario', 'cadastrarAtividade');\">Cadastrar atividade</a>";
-                                        echo "&emsp;";
-                                        echo "<a type=\"button\" class=\"btn btn-default\" value=\"Cadastrar Recurso\" onclick=\"javascript:doPost('formulario', 'cadastrarRecurso');\">Adicionar Recurso</a>";
-                                    }
-                                    else{
-                                        echo "<h3 class=cover-heading style=padding: 2px;>" . "Não há turmas cadastradas!" . "</h3>";
-                                    }
-                                    ?>
-                            </div>
+                                         $query = mysql_query("SELECT*FROM `recursos` WHERE `Turma` = '$turma[0]'");
+
+                                         if(mysql_num_rows($query)>0){
+
+
+                                                    echo "
+
+
+                                                           <table class='table' style='border-radius:10px;'>
+                                                           <thead>
+                                                           <tr>
+                                                           <td>Descrição</td>
+                                                           <td>Download</td>
+                                                           </tr>
+                                                           </thead>
+                                                           <tbody>
+                                                    ";
+
+
+                                                  while($recursos = mysql_fetch_array($query)){
+
+                                                          if($turma[0] == $recursos['Turma']){
+
+                                                                    $descricao = $recursos['Descricao'];
+                                                                    $link = $recursos['Caminho'];
+
+
+                                                                    echo "
+
+                                                                                <tr>
+                                                                                <td>$descricao</td>
+                                                                                <td><a target='_blank'class='btn btn-default' role='button' href='$link'>Download</a></td>
+                                                                                </tr>
+
+                                                                    ";
+
+                                                          }
+
+
+                                                  }
+
+
+                                                  echo "</tbody>";
+                                                  echo"</table";
 
 
 
-                            </form>
 
 
-                        </div>
+                                         }
+                                         else{
+
+
+                                           echo "<div style='text-shadow:none' class='alert alert-danger' role='alert'><h4 class='alert-heading'><strong>Atenção </strong> </h4>Não existem recursos cadastrados nesta turma.&emsp;</div>";
+
+
+
+                                         }
+
+
+                           ?>
+              </div>
+          </div>
+
+
+
 
                         <!-- <div class="mastfoot">
                           <div class="inner">
@@ -129,9 +168,7 @@ if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) 
 
                     </div>
 
-                </div>
 
-            </div>
 
             <!-- Bootstrap core JavaScript
             ================================================== -->

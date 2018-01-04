@@ -117,13 +117,13 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplica√ß√
     <body>
 
 
-              <div class="site-wrapper">
 
-                  <div class="site-wrapper-inner">
+
+
 
                       <div class="cover-container">
 
-                          <div class="masthead clearfix">
+                          <div >
                               <div class="inner">
 
                                   <nav>
@@ -389,7 +389,7 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplica√ß√
 
                                $blocos = "
 
-                                <div  style='text-shadow:none;border-radius:4px' class='panel-primary '>
+                                <div  style='text-shadow:none;border-radius:4px' class='panel-primary pre-scrollable'>
                                   <div style='border-radius:4px'class='panel-heading'>".$titulo."</div>
                                   <textarea name='texto'rows='$linhas'cols='29' id='bloco".$busca['Bloco']."'  style='background-color:black;border-radius:4px'class='panel-body'>".$bloco."</textarea>
                                   <input type='hidden'id='idAtividade'name='idAtividade' value='".$atividade."'/>
@@ -481,9 +481,8 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplica√ß√
                             </div>
                           </div> -->
 
-                      </div>
 
-                  </div>
+
 
 
         <!-- Bootstrap core JavaScript
