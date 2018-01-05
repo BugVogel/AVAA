@@ -40,20 +40,31 @@ if($_POST['descricao'] != ""){
    $descricao = $_POST['descricao'];
 
 
+  
    if(isset($_FILES['arquivo'])) {
-
+     
 
           if($_FILES['arquivo']['name'] != ""){
                 $src = $_FILES['arquivo'];
 
                  $arquivo = $src['tmp_name'];
-                 $nomeArquivo = $src['name'];
-                 $caminho = '../data/'. $nomeArquivo;
+                 
+               
 
+                
 
-                mysql_query("INSERT INTO `recursos` (`Descricao`, `Turma`,`Caminho`) VALUES ('$descricao',$turma[0],'$caminho')");
+                mysql_query("INSERT INTO `recursos` (`Descricao`, `Turma`) VALUES ('$descricao',$turma[0])");
+                $ID = mysql_insert_id();
+                 
+                $nomeArquivo = "Arquivo". $ID ."." .pathinfo($src['name'], PATHINFO_EXTENSION) ;
+                $caminho = '../data/'. $nomeArquivo;
 
+                mysql_query("UPDATE `recursos` SET `Caminho`='$caminho'");
+
+                
+                
                 move_uploaded_file($arquivo,$caminho);
+               
 
               }
               else{
@@ -145,7 +156,7 @@ if($_POST['descricao'] != ""){
 
 
 
-                    <div class="cover-container">
+<div class="cover-container">
 
                         <div class="masthead clearfix">
                             <div class="inner">
@@ -154,7 +165,7 @@ if($_POST['descricao'] != ""){
                                     <ul class="nav masthead-nav">
                                         <li><a href="principalProf.php">Início</a></li>
                                         <li><a href="minhasTurmas.php">Minhas turmas</a></li>
-                                        <li class="active"><a href="cadastrarRecurso.php">Recursos</a></li>
+                                        <li class="active"><a href="">Recursos</a></li>
                                         <li><a href="ModuloCorretor.php">Módulo corretor</a></li>
                                         <li><a href="?go=sair">Logoff</a></li>
                                     </ul>

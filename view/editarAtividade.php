@@ -92,6 +92,7 @@ if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) 
                             $turmas = $_GET['turmas'];
 
                             echo "<input type='hidden' name='turmas' value=$turmas  />";
+                            
 
                             if (isset($_SESSION['codigo'])){
                                 if ($_SESSION['codigo'] != NULL) {
@@ -102,23 +103,37 @@ if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) 
                                     }
                                     else if($_SESSION['nivel'] == 2){
                                         echo "<font size=\"6\" style=\"text-decoration: underline;\"> Nível 2</font> <br>";
-                                        echo "<font size=\"3\"> Você deve selecionar as linhas que determinam o início dos blocos condicionais ou de repetição e as linhas que deseja quebrar para transformar em bloco.</font> <br><br>";
+                                        echo "<font size=\"3\"> Você deve selecionar as linhas que determinam o inicio de um bloco do código.</font> <br><br>";
                                     }
                                     else if($_SESSION['nivel'] == 3){
                                         echo "<font size=\"6\" style=\"text-decoration: underline;\"> Nível difícil</font> <br>";
                                         echo "<font size=\"3\"> O algoritmos cadastrado será dividido em linhas.</font> <br><br>";
                                     }
 
+                                    
+                                   
                                     $texto = explode("\n", $_SESSION['codigo']);
-                                    $id = 1;
+                                   
+                                    
+                                  
 
                                     echo "<table align='center' border=2 cellspacing=3 cellpadding=2 style=\"font-size: 110%;\">";
-                                    foreach($texto as $nome){
-
-                                        echo "<tr><td>&emsp;$id&emsp;</td><td>&emsp;$nome&emsp;</td>"
-                                            . "<td>&emsp;<input name=\"linhas[]\" type=\"checkbox\" id=\"linha".$id."\" value=" . $id . "> &emsp;</td></tr>";
-                                        $id++;
+                                    for($i=0; $i<sizeof($texto); $i++){
+                                        
+                                        $nome = $texto[$i];
+                                        
+                                        echo "<tr><td>&emsp;$i&emsp;</td><td>&emsp;$nome&emsp;</td>"
+                                            . "<td>&emsp;<input name=\"linhas[]\" type=\"checkbox\" id=\"linha".$i."\" "; 
+                                            if($i == 0) {
+                                            echo "checked  onclick='return false;'";
+                                            }
+                                            else if( $i +1 == sizeof($texto) ){
+                                                echo "checked onclick='return false;'";
+                                            }
+                                        echo    " value='" . $i . "'> &emsp;</td></tr>";
+                                        
                                     }
+                                    
                                     echo "</table>";
                                 }
                             }

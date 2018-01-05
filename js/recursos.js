@@ -25,8 +25,7 @@ function onlyOneCheck(idPressed){
 
                                       linkLabel.style.visibility = 'visible';
                                       linkInput.type = 'text';
-
-
+                                      
 
                          break;
                          case 'link':
@@ -37,6 +36,8 @@ function onlyOneCheck(idPressed){
 
                          linkLabel.style.visibility = 'hidden';
                          linkInput.type = 'hidden';
+                         linkInput.value = '';
+
 
 
 

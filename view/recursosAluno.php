@@ -68,10 +68,9 @@ if (!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session'])) 
 
                                 <nav>
                                     <ul class="nav masthead-nav">
-                                        <li><a href="principalProf.php">Início</a></li>
+                                        <li><a href="principalAluno.php">Início</a></li>
                                         <li ><a href="minhasTurmasAluno.php">Minhas turmas</a></li>
                                         <li class="active"><a href="">Recursos</a></li>
-                                        <li><a href="ModuloCorretor.php">Módulo corretor</a></li>
                                         <li><a href="?go=sair">Logoff</a></li>
                                     </ul>
                                 </nav>

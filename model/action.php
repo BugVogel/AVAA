@@ -170,6 +170,7 @@ function salvarAtividadeNivel2(){
 
        //Pega informações necessárias
        $turmas = $_POST['turmas'];
+       $turmas = explode(',', $turmas);
        $texto = explode("\n", $_SESSION['codigo']); //Existe problema no '<' quando usado no código
        $linhas = $_POST['linhas'];
        $blocos = array();
@@ -177,67 +178,44 @@ function salvarAtividadeNivel2(){
        $prox=0;
        $quantidade_blocos = sizeof($linhas);
 
-       if( !($texto[$linhas[0]-1] == $texto[0]) ){  //Não selecionou a primeira linha
-         $quantidade_blocos++;
-       }
+           
+            array_push($blocos, "");
+           for($j =1; $j<sizeof($linhas);$j++){ 
+                   $proxLinha = $linhas[$j];
+                 
+                for($i =$b; $i<sizeof($texto); $i++){
+                 
+                    if($i != $proxLinha){  
+                    $blocos[$j-1] .=  $texto[$i];
 
+ 
+                    }
+                    else if($i == $linhas[sizeof($linhas)-1]){ //insere ultima linha
 
-            for($i=0; $i<$quantidade_blocos;$i++){
-              for($j=$b; $j<sizeof($texto);$j++){
+                    $blocos[$j-1] .= $texto[$i];
+                    $b = $proxLinha;  
+                    
+                    break;
 
+                    }
 
-                     if(isset($linhas[$prox])){
-
-                       if($texto[$linhas[$prox]-1] == $texto[$j]){ //Para quando acha linha
-
-                              if(empty($blocos[$i])){ //Primeira linha do bloco
-                                $blocos[$i] = $texto[$j];
-                                $prox +=1;
-                                goto end; //Finaliza essa etapa do loop
-                              }
-                              else{ //Achou a linha selecionada do bloco seguinte
-
-                                $b = $j; //Salva lugar que parou
-                                break;
-                              }
-
-
-                       }
-
-                     }
-                     if(strpos($texto[$j],"}")){ //Para em fechamento de bloco
-                          if(!isset($blocos[$i])){ //Faz o index existir
-                            $blocos[$i] = "";
-                           }
-                           $lineCode =  $blocos[$i]. "<br>". $texto[$j] ;  //Adicionar
-                           $blocos[$i] = $lineCode;
-                           $b = $j+1;
-                           break;
-                     }
-                     else{ //Adiciona ao bloco
-
-                               if(!isset($blocos[$i])){ //Faz o index existir
-                                 $blocos[$i] = "";
-                               }
-
-
-                              $lineCode =  $blocos[$i]. "<br>". $texto[$j] ;  //Adicionar
-                              $blocos[$i] = $lineCode;
+                    else{
+                    array_push($blocos, ""); //cria um novo espaço    
+                    $b = $proxLinha;  //Inicio de outro bloco
+                    break;
+                    }
 
 
 
-                       }
-
-                      end: //Ponto de ida, do goto
-
-              }
+                }
             }
 
            $descricao = $_SESSION['descricao_nivel2'];
            $nivel = $_SESSION['nivel'];
            $num_Blocos = sizeof($blocos);
+         
            //Coloca em tabela atividade
-           mysql_query("INSERT INTO `atividade` (`Descricao`, `Nivel`, `N_Blocos`) VALUES ('$descricao', '$nivel', '$num_Blocos')");
+            mysql_query("INSERT INTO `atividade` (`Descricao`, `Nivel`, `N_Blocos`) VALUES ('$descricao', '$nivel', '$num_Blocos')");
            $ID = mysql_insert_id();
 
            for($i = 0; $i<sizeof($blocos); $i++){ //Insere blocos em tabela bloco_linhas
@@ -251,6 +229,7 @@ function salvarAtividadeNivel2(){
            for($i = 0; $i<sizeof($turmas); $i++) //Adiciona atividades em turmas e em cada aluno
            {
                $idTurma = $turmas[$i];
+               
                $res = mysql_query("INSERT INTO `atividade_turma` (`ID_atividade`, `ID_turma`) VALUES ('$ID', '$idTurma')");
 
                $procura = mysql_query("SELECT * FROM `turma_alunos` WHERE `ID_turma` = $idTurma");
@@ -266,16 +245,22 @@ function salvarAtividadeNivel2(){
 
            }
 
-            echo "<meta http-equiv='refresh' content='0, url=../view/minhasTurmas.php'>";
+           echo "<meta http-equiv='refresh' content='0, url=../view/minhasTurmas.php'>";
             echo "<script>alert('Atividade cadastrada com sucesso!')</script>";
+            
 
      }
+
+
+     
+
 
 
      function salvarAtividadeDificil(){
 
 
                $turmas = $_POST['turmas'];
+               $turmas = explode(',',$turmas);
                $descricao = $_POST['descricao'];
                $codigo = $_POST['codigo'];
                $nivel = 3;
@@ -322,7 +307,7 @@ function salvarAtividadeNivel2(){
 
 
 function editarAtividade(){
-    session_start();
+    
     $_SESSION['codigo'] = $_POST['codigo'];
     $_SESSION['nivel'] = 2;
     $_SESSION['descricao_nivel2'] = $_POST['descricao'];
