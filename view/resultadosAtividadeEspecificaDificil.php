@@ -121,9 +121,9 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
                         <form name='formulario' method='POST' action=''>
                         <input type='hidden' name='emailAluno' value='$email' />
                               <div class='col-md-5 col-md-offset-1'>
-                                  <div    style='text-shadow:none;border-radius:4px' class='panel-primary'>
+                                  <div    style='text-shadow:none;border-radius:4px' class='panel-primary pre-scrollable'>
                                     <div style='border-radius:4px'class='panel-heading'>Bloco Único de Resposta do Aluno</div>
-                                    <textarea id='bloco1' cols='46' rows='$linhas' name='correcao'  style='background-color:black;border-radius:4px'class='panel-body'>$resposta</textarea>
+                                    <textarea id='bloco1' cols='46' rows='15' name='correcao'  style='background-color:black;border-radius:4px'class='panel-body'>$resposta</textarea>
                                   </div>
                                </div>";
 
@@ -156,7 +156,7 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
                                 $blocoAluno =
                                 "<form name='formulario' method='POST' action=''>
                                       <div class='col-md-5 col-md-offset-1'>
-                                          <div    style='text-shadow:none;border-radius:4px' class='panel-primary'>
+                                          <div    style='text-shadow:none;border-radius:4px' class='panel-primary pre-scrollable'>
                                             <div style='border-radius:4px'class='panel-heading'>Bloco Único de Resposta do Aluno</div>
                                             <div id='bloco1'  name='correcao'  style='background-color:black;border-radius:4px'class='panel-body'>$resposta</div>
                                           </div>
@@ -178,7 +178,7 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
                               $blocoAluno =
                               "<form name='formulario' method='POST' action=''>
                                     <div class='col-md-5 col-md-offset-1'>
-                                        <div    style='text-shadow:none;border-radius:4px' class='panel-primary'>
+                                        <div    style='text-shadow:none;border-radius:4px' class='panel-primary pre-scrollable'>
                                           <div style='border-radius:4px'class='panel-heading'>Bloco Único de Resposta do Aluno</div>
                                           <div id='bloco1'  name='correcao'  style='background-color:black;border-radius:4px'class='panel-body'>$resposta</div>
                                         </div>
@@ -286,9 +286,9 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
     <body>
 
 
-              <div class="site-wrapper">
+             
 
-                  <div class="site-wrapper-inner">
+                 <br><br>
 
                       <div class="cover-container">
 
@@ -538,7 +538,7 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
 
                          echo   "
                          <div class='col-md-5 col-md-offset-1'>
-                             <div    style='text-shadow:none;border-radius:4px' class='panel-primary'>
+                             <div    style='text-shadow:none;border-radius:4px' class='panel-primary pre-scrollable'>
                                <div style='border-radius:4px'class='panel-heading'>Bloco Único Cadastrado</div>
                                <div id='bloco1'  style='background-color:black;border-radius:4px'class='panel-body'>$bloco</div>
                              </div>
@@ -578,9 +578,9 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
                             </div>
                           </div> -->
 
-                      </div>
+                   
 
-                  </div>
+           
 
 
         <!-- Bootstrap core JavaScript

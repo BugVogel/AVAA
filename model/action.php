@@ -169,8 +169,8 @@ function salvarAtividadeFacil(){
 function salvarAtividadeNivel2(){
 
        //Pega informações necessárias
-       $turmas = $_POST['turmas'];
-       $turmas = explode(',', $turmas);
+       $turmasURL = $_POST['turmas'];
+       $turmas = explode(',', $turmasURL);
        $texto = explode("\n", $_SESSION['codigo']); //Existe problema no '<' quando usado no código
        $linhas = $_POST['linhas'];
        $blocos = array();
@@ -213,7 +213,13 @@ function salvarAtividadeNivel2(){
            $descricao = $_SESSION['descricao_nivel2'];
            $nivel = $_SESSION['nivel'];
            $num_Blocos = sizeof($blocos);
-         
+            
+           if($num_Blocos > 9){ //Só permite até 9 blocos de código
+               echo "<script>alert('Somente é permitido dividir o código em 9 blocos')</script>";
+               echo "<meta http-equiv='refresh' content='0, url=../view/editarAtividade.php?turmas=$turmasURL'>";
+               return;
+           }
+
            //Coloca em tabela atividade
             mysql_query("INSERT INTO `atividade` (`Descricao`, `Nivel`, `N_Blocos`) VALUES ('$descricao', '$nivel', '$num_Blocos')");
            $ID = mysql_insert_id();
@@ -248,7 +254,7 @@ function salvarAtividadeNivel2(){
            echo "<meta http-equiv='refresh' content='0, url=../view/minhasTurmas.php'>";
             echo "<script>alert('Atividade cadastrada com sucesso!')</script>";
             
-
+       
      }
 
 
@@ -613,7 +619,7 @@ function chamaRecursos(){
   else{
 
       echo "<script>alert('Você não selecionou nenhuma turma')</script>";
-      echo "<meta  http-equiv='refresh' content='0, url=../view/minhasTurmas.php'/>";
+      echo "<meta  http-equiv='refresh' content='0, url=../view/minhasTurmasAluno.php'/>";
 
   }
 

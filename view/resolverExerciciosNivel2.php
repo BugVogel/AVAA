@@ -250,7 +250,7 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplicaç�
                                       }
 
                                    }
-                                   else{ //Não possui avisos suficientes para esta pagina
+                                   else{ //Não possui atividades suficientes para esta pagina
 
                                      echo "<div style='text-shadow:none' class='alert alert-danger' role='alert'><h4 class='alert-heading'><strong>Atenção </strong> </h4>Não existem atividades Cadastradas.&emsp;Entre em contato com o seu professor</div>
                                      <br><br>";
@@ -410,12 +410,15 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplicaç�
 
 
                                }
-
+                                $j=0;
 
                                for($i=0; $i<sizeof($ordemBlocos); $i++){ //Imprime blocos na ordem gerada
                                  $a = $i+1;
-
-                                 echo "<div class='col-md-4 col-xs-4'>";
+                                 if($j == 2){
+                                   echo "<div class='row'>";
+                                 }
+                                  
+                                 echo "<div class='col-md-4 col-sm-4 col-xs-4'>";
                                  echo "<label for='bloco' >Posição $a</label>";
                                  echo "<div id='coluna".$a."'name='bloco' >";
                                  echo $blocos[$ordemBlocos[$i]];
@@ -423,6 +426,13 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplicaç�
                                  echo "<input id='posicao'type='hidden' value='".$a."' name='posicao' >";
                                  echo "</div>";
 
+                                 if($j == 2){
+                                   echo "</div>";
+                                   $j=0;
+                                 }else{
+                                  $j++;
+                                 }
+                                  
 
                                }
 
@@ -442,7 +452,7 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplicaç�
 
                         </form>
 
-                            <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                            <br><br>
 
 
                           <button class="btn btn-info"  onclick="javascript:verificarResposta();">Enviar Resposta</button>
@@ -462,12 +472,6 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplicaç�
                           </form>
 
                    </div>
-
-
-
-
-
-
 
                  </div>
 

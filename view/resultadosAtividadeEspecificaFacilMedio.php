@@ -121,13 +121,10 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
     <body>
 
 
-              <div class="site-wrapper">
-
-                  <div class="site-wrapper-inner">
 
                       <div class="cover-container">
 
-                          <div class="masthead clearfix">
+                         
                               <div class="inner">
 
                                   <nav>
@@ -140,7 +137,7 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
                                       </ul>
                                   </nav>
                               </div>
-                          </div>
+                         
 
                           </div>
 
@@ -364,14 +361,17 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
 
                        $queryBlocos = mysql_query("SELECT * FROM `bloco_linhas` WHERE `ID_atividade`='$atividade'");
                        $j=1;
+                       $a=0;
                        while($blocos = mysql_fetch_array($queryBlocos)){
 
                           $bloco = $blocos['texto'];
 
-
+                          if($a ==2){
+                            echo "<div class='row'>";
+                          }
 
                          echo   "
-                         <div class='col-md-4'>
+                         <div class='col-md-4 col-sm-4 col-xs-4 col-lg-4'>
                              <div    style='text-shadow:none;border-radius:4px' class='panel-primary'>
                                <div style='border-radius:4px'class='panel-heading'>Bloco $j</div>
                                <div id='bloco$j'  style='background-color:black;border-radius:4px'class='panel-body'>$bloco</div>
@@ -379,6 +379,12 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
                           </div>
                                 ";
 
+                                if($a == 2){
+                                  echo "</div>";
+                                  $a=0;
+                                }else{
+                                 $a++;
+                                }
                          $j++;
                        }
 
@@ -419,10 +425,7 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
                             </div>
                           </div> -->
 
-                      </div>
-
-                  </div>
-
+                    
 
         <!-- Bootstrap core JavaScript
         ================================================== -->

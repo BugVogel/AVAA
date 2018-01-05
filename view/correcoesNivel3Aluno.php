@@ -428,7 +428,7 @@ $atividadesRespondidas =  array_unique($atividadesRespondidas);    //Tira duplic
 
   //Bloco do aluno
                                 echo "
-                           <div id='coluna'name='bloco' class='col-md-5 col-xs-12 col-md-offset-1'>
+                           <div id='coluna'name='bloco' class='col-md-5 col-xs-12 col-md-offset-1 pre-scrollable'>
                                  <div  style='text-shadow:none;border-radius:4px' class='panel-primary '>
                                    <div style='border-radius:4px'class='panel-heading'>Bloco de Resposta Enviado</div>
                                    <div name='texto' id='bloco3'  style='background-color:black;border-radius:4px'class='panel-body'>".$blocoAluno."</div>
@@ -449,7 +449,7 @@ $atividadesRespondidas =  array_unique($atividadesRespondidas);    //Tira duplic
 
                                       case 'Errou' :
                                       echo "
-                                     <div id='coluna'name='bloco' class='col-md-5 col-xs-12 col-md-offset-1'>
+                                     <div id='coluna'name='bloco' class='col-md-5 col-xs-12 col-md-offset-1 pre-scrollable'>
                                        <div  style='text-shadow:none;border-radius:4px' class='panel-primary '>
                                          <div style='border-radius:4px'class='panel-heading'>Bloco de Correção do Professor</div>
                                          <div name='texto' id='bloco3'  style='background-color:black;border-radius:4px'class='panel-body'>".$blocoProfessor."</div>
@@ -463,7 +463,7 @@ $atividadesRespondidas =  array_unique($atividadesRespondidas);    //Tira duplic
 
                                       case 'Acertou':
                                       echo "
-                                     <div id='coluna'name='bloco' class='col-md-5 col-xs-12 col-md-offset-1'>
+                                     <div id='coluna'name='bloco' class='col-md-5 col-xs-12 col-md-offset-1 pre-scrollable'>
                                        <div  style='text-shadow:none;border-radius:4px' class='panel-primary '>
                                          <div style='border-radius:4px'class='panel-heading'>Bloco de Correção do Professor</div>
                                          <div name='texto' id='bloco3'  style='background-color:black;border-radius:4px'class='panel-body'>".$blocoProfessor."</div>

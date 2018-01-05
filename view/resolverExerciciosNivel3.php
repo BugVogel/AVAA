@@ -144,6 +144,7 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplica√ß√
 
 
                           <div  class="inner cover"  >
+                          <div class='row'> 
                             <h2 style="text-align:center">Resolver Exerc√≠cios N√≠vel 3</h2>
                             <br>
 
@@ -391,7 +392,7 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplica√ß√
 
                                 <div  style='text-shadow:none;border-radius:4px' class='panel-primary pre-scrollable'>
                                   <div style='border-radius:4px'class='panel-heading'>".$titulo."</div>
-                                  <textarea name='texto'rows='$linhas'cols='29' id='bloco".$busca['Bloco']."'  style='background-color:black;border-radius:4px'class='panel-body'>".$bloco."</textarea>
+                                  <textarea name='texto'rows='15'cols='29' id='bloco".$busca['Bloco']."'  style='background-color:black;border-radius:4px'class='panel-body'>".$bloco."</textarea>
                                   <input type='hidden'id='idAtividade'name='idAtividade' value='".$atividade."'/>
                                 </div>
 
@@ -434,44 +435,18 @@ $atividadesParaFazer =  array_unique($atividadesParaFazer);    //Tira duplica√ß√
 
                         </form>
 
-                            <?php
-
-                        if(isset($linhas)){
-                               for($i=0; $i<$linhas+5;$i++){
-                                 echo "<br>";
-                               }
-                          }
-                          else{
-
-                            echo "<br><br><br><br><br><br><br><br><br>";
-                          }
-
-                            ?>
-
-
-                            <button class="btn btn-info"  onclick="javascript:enviarAtividadeNivel3();">Enviar Resposta</button>
-                            <button class="btn btn-danger" onclick="javascript:cancelarAtividade();">Cancelar</button>
-
-
-
-                          <form style="visibility:hidden"method="POST" action="">
-
-
-
-
-                          </form>
-
+                       
+                     
                    </div>
-
-
-
-
-
-
-
+                   </div>
                  </div>
-
-
+<br><br><br>
+                 <div class='row'>
+                  <div class='col-md-offset-4'>
+                    <button class="btn btn-info"  onclick="javascript:enviarAtividadeNivel3();">Enviar Resposta</button>
+                    <button class="btn btn-danger" onclick="javascript:cancelarAtividade();">Cancelar</button>
+                    </div>
+                </div>
 
 
 
