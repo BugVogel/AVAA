@@ -43,7 +43,7 @@ if($_POST['descricao'] != ""){
   
    if(isset($_FILES['arquivo'])) {
      
-
+      echo "<script>alert('teste')</script>";
           if($_FILES['arquivo']['name'] != ""){
                 $src = $_FILES['arquivo'];
 
@@ -53,7 +53,7 @@ if($_POST['descricao'] != ""){
 
                 
 
-                mysql_query("INSERT INTO `recursos` (`Descricao`, `Turma`) VALUES ('$descricao',$turma[0])");
+                mysql_query("INSERT INTO `recursos` (`Descricao`, `Turma`) VALUES ('$descricao',$turma)");
                 $ID = mysql_insert_id();
                  
                 $nomeArquivo = "Arquivo". $ID ."." .pathinfo($src['name'], PATHINFO_EXTENSION) ;
@@ -70,14 +70,14 @@ if($_POST['descricao'] != ""){
               else{
                 echo "<script>alert('Selecione o recurso')</script>";
               }
-
+              
    }
    else if(isset($_POST['link']) ){
 
     if($_POST['link'] != ""){
         $link = $_POST['link'];
 
-        mysql_query("INSERT INTO `recursos` (`Descricao`, `Turma`,`Caminho`) VALUES ('$descricao','$turma[0]','$link')");
+        mysql_query("INSERT INTO `recursos` (`Descricao`, `Turma`,`Caminho`) VALUES ('$descricao','$turma','$link')");
       }
    }
    else{

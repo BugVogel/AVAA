@@ -1,8 +1,7 @@
-<?php
+﻿<?php
 session_start();
 require_once 'conexao.php';
 if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
-
 ?>
 
 <!DOCTYPE html>
@@ -122,7 +121,6 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
     if (@$_GET['go'] == 'logar') {
         $email = $_POST['email'];
         $senha = $_POST['senha'];
-
         if (empty($email)) {
             echo "<script> alert{'Preencha todos os campos!'}; history.back(); <\script>";
         } elseif (empty($senha)) {
@@ -130,7 +128,6 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
         } else {
             $query1 = mysql_num_rows(mysql_query("SELECT * FROM `aluno` WHERE `Email` = '$email' AND `Senha` = '$senha'"));
             if ($query1 == 1) {
-
               if(filter_var($email, FILTER_VALIDATE_EMAIL)){
                 $_SESSION['usuario_session'] = $email;
                 $_SESSION['senha_session'] = $senha;
@@ -145,7 +142,6 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
             } else {
                 $query1 = mysql_num_rows(mysql_query("SELECT * FROM `professor` WHERE `Email` = '$email' AND `Senha` = '$senha'"));
                 if ($query1 == 1) {
-
                   if(filter_var($email, FILTER_VALIDATE_EMAIL)){
                     $_SESSION['usuario_session'] = $email;
                     $_SESSION['senha_session'] = $senha;
@@ -159,14 +155,11 @@ if(!isset($_SESSION['usuario_session']) && !isset($_SESSION['senha_session']) ){
                   }
                 }
                 else{
-
                     //mysql_query("INSERT INTO `aluno` (`Nome`, `Curso`, `Semestre`, `Email`, `Senha`) VALUES ('$nome', '$curso', '$semestre', '$email', '$senha')");
                     echo '<script language="javascript">';
                     echo 'alert("Email ou senha incorretos")';
                     echo '</script>';
                 }
-
-
                 //echo "<meta http-equiv='refresh' content='0, url=index.php'>";
             }
         }
